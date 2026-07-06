@@ -1,14 +1,25 @@
-*.zip
-
-### Windows
-# Windows thumbnail cache files
+# Systèmes
+.DS_Store
 Thumbs.db
+desktop.ini
 
-# Folder config file
-[Dd]esktop.ini
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*~
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# Secrets / clés (ne JAMAIS committer)
+*.pem
+*_ci
+*_ci.pub
+*.key
+.env
+.env.*
+secrets.*
 
-# Windows shortcuts
-*.lnk
+# Artefacts de build / paquets
+*.zip
+node_modules/
+dist/
+tmp/

@@ -1,0 +1,56 @@
+name: Déploiement (dev → VPS)
+
+# Se déclenche à chaque push sur la branche `dev`, et manuellement au besoin.
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch: {}
+
+# Un seul déploiement à la fois ; un nouveau push annule celui en cours.
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Préparer la clé SSH de déploiement
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Versionner le service worker (cache = SHA du commit)
+        run: |
+          SHA="${GITHUB_SHA::7}"
+          sed -i "s/const CACHE = \"[^\"]*\"/const CACHE = \"ajm-${SHA}\"/" aujustemotcnv/sw.js
+          echo "Version du cache : $(grep -o 'ajm-[^\"]*' aujustemotcnv/sw.js | head -1)"
+
+      - name: Déployer l'application (rsync)
+        env:
+          # Webroot cible. Par défaut la prod ; pour un environnement de
+          # préproduction, définis la *variable* de dépôt DEPLOY_PATH
+          # (Settings → Secrets and variables → Actions → Variables).
+          DEPLOY_PATH: ${{ vars.DEPLOY_PATH || '/var/www/aujustemotcnv' }}
+        run: |
+          echo "Cible : ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${DEPLOY_PATH}/"
+          rsync -az --delete \
+            --exclude='.well-known' \
+            -e "ssh -i ~/.ssh/id_deploy -o StrictHostKeyChecking=yes" \
+            aujustemotcnv/ \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${DEPLOY_PATH}/"
+
+      - name: Vérification post-déploiement (smoke test)
+        env:
+          # URL testée après déploiement. Change-la si tu déploies dev sur un
+          # sous-domaine de préproduction (ex. https://dev.justemotcnv.com/).
+          CHECK_URL: ${{ vars.CHECK_URL || 'https://justemotcnv.com/' }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" "$CHECK_URL" || echo "000")
+          echo "GET $CHECK_URL → HTTP $code"
+          test "$code" = "200"

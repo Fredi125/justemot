@@ -4,7 +4,7 @@
    - meme origine : cache-first puis reseau (et on garde la copie)
    - Google Fonts : stale-while-revalidate -> hors-ligne apres la 1re visite en ligne
    Bump CACHE a chaque nouvelle version de l'app pour forcer la mise a jour. */
-const CACHE = "ajm-v13";
+const CACHE = "ajm-dev";
 const FONTS = "ajm-fonts-v1";
 const SHELL = [
   "./",

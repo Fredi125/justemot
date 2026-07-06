@@ -23,6 +23,13 @@ echo "==> 1/5  Vérifications préalables"
 command -v nginx >/dev/null 2>&1 || { echo "ERREUR : nginx introuvable"; exit 1; }
 [ -f "${APP_SRC}/index.html" ] || { echo "ERREUR : index.html manquant dans $APP_SRC"; exit 1; }
 
+echo "==> 1b/5 Versionnement du service worker (cache horodaté)"
+# Force une version de cache unique a chaque deploiement, sinon les clients
+# installes ne recoivent jamais la mise a jour. En CI, c'est le SHA du commit.
+STAMP="$(date +%Y%m%d%H%M%S)"
+sed -i "s/const CACHE = \"[^\"]*\"/const CACHE = \"ajm-${STAMP}\"/" "${APP_SRC}/sw.js"
+echo "    $(grep 'const CACHE' "${APP_SRC}/sw.js")"
+
 echo "==> 2/5  Copie des fichiers vers ${WEBROOT}"
 sudo mkdir -p "$WEBROOT"
 # -T : copie le CONTENU de APP_SRC dans WEBROOT (et non un sous-dossier)
