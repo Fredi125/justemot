@@ -1,0 +1,66 @@
+AU JUSTE MOT — LA CNV APPLIQUÉE
+Paquet complet : application (PWA) + validation du corpus + déploiement
+=======================================================================
+
+Nom visible (installation / onglet) : « Au juste mot — La CNV appliquée »
+Nom court (sous l'icône)            : « Au juste mot »
+Identifiant technique / dossier     : aujustemotcnv
+Domaine prévu                       : justemotcnv.com
+
+
+Contenu du paquet
+-----------------
+
+  aujustemotcnv/           L'application web (PWA), prête à déployer.
+    index.html               Application complète (autonome, aucune dépendance externe).
+    manifest.webmanifest     Métadonnées d'installation (nom, icônes, couleurs).
+    sw.js                    Service worker (hors ligne + cache). Version « ajm-v12 ».
+    donnees-emotions.json    Le corpus (sentiments, besoins, faux-sentiments).
+    icons/                   Icônes de l'application.
+    serve.ps1                Serveur de test local sous Windows (PowerShell).
+    LISEZMOI.txt             Notes propres à l'application.
+
+  validation/              La validation croisée du corpus contre les listes CNV de référence.
+    validation-corpus-cnv.docx   Le rapport (méthode, sources, robustesse, recommandations).
+    validation-corpus-cnv.xlsx   Le classeur de travail (9 onglets, triable et annotable).
+
+  deploiement/            Tout le nécessaire pour publier sur le VPS (Nginx).
+    aujustemotcnv.conf       Vhost Nginx pour justemotcnv.com (domaine dédié, isolé).
+    deployer-serveur.sh      Script de déploiement côté VPS (idempotent, sans collision).
+    televerser.ps1           Transfert du paquet depuis Windows (PowerShell).
+
+
+Déploiement sur le VPS — résumé
+-------------------------------
+
+  1. DNS — chez le registrar du domaine, faire pointer justemotcnv.com vers le VPS :
+        Type A     @     192.99.68.47
+        Type AAAA  @     2607:5300:205:200::8b68
+        Type A     www   192.99.68.47
+        Type AAAA  www   2607:5300:205:200::8b68
+     (TTL court, p. ex. 300 s, le temps des réglages.) Attendre la propagation.
+
+  2. Transfert — depuis Windows, dans le dossier contenant aujustemotcnv.zip :
+        .\televerser.ps1
+
+  3. Mise en place — en SSH sur le VPS :
+        cd /tmp/aujustemotcnv-paquet/deploiement
+        bash deployer-serveur.sh
+
+  4. HTTPS — quand le DNS résout déjà vers le VPS :
+        sudo certbot --nginx -d justemotcnv.com -d www.justemotcnv.com
+
+  5. Vérifier :
+        curl -I https://justemotcnv.com      (attendu : HTTP/2 200)
+     Puis ouvrir l'URL dans un navigateur, tester l'installation et le mode hors ligne.
+
+  Le dossier « validation » n'est PAS publié : le script ne déploie que « aujustemotcnv ».
+
+
+Mises à jour futures
+--------------------
+  Reconstruire l'app (le service worker passe à ajm-v12, etc.), puis relancer
+  les étapes 2 et 3. Les clients déjà installés se mettent à jour automatiquement
+  au chargement suivant. Le proxy n'est jamais retouché.
+
+Préparé le 16 juin 2026.

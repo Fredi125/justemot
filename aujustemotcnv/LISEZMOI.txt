@@ -1,0 +1,47 @@
+Au juste mot — application web installable (PWA)
+==================================================
+
+CONTENU DU DOSSIER
+  index.html              l'application (tout est inclus : style, code, donnees)
+  manifest.webmanifest    metadonnees d'installation (nom, icones, couleurs)
+  sw.js                   service worker (fonctionnement hors-ligne + mise en cache)
+  icons/                  icones (192, 512, maskable, apple-touch, favicon)
+  donnees-emotions.json   les donnees brutes (reference ; deja incluses dans index.html)
+  serve.ps1               serveur de test local (Windows PowerShell)
+
+TESTER EN LOCAL (sur ta machine)
+  Une PWA exige un « contexte securise ». http://localhost en fait partie :
+  pas besoin de certificat HTTPS pour tester chez toi.
+    1. Ouvre PowerShell dans ce dossier.
+    2. powershell -ExecutionPolicy Bypass -File .\serve.ps1
+    3. Ouvre http://localhost:8080/ dans Chrome ou Edge.
+    4. Une invite « Installer » doit apparaitre (ou menu ... > Installer l'application).
+  (Alternative si tu as Python : py -m http.server 8080)
+
+METTRE EN LIGNE POUR TOMMY (telephone)
+  Sur un telephone, l'installation exige un VRAI hebergement HTTPS. Options simples :
+    - GitHub Pages, Netlify ou Cloudflare Pages (gratuit, HTTPS automatique) :
+      depose le contenu de ce dossier, l'URL fournie est installable telle quelle.
+    - Ton propre serveur (nginx/Apache) avec un certificat (Let's Encrypt).
+  Sers le dossier tel quel ; les chemins sont relatifs, donc racine de domaine
+  ou sous-dossier fonctionnent tous les deux.
+  IMPORTANT : le serveur doit renvoyer les bons types MIME —
+    .webmanifest -> application/manifest+json
+    .js          -> text/javascript
+  (serve.ps1 et la plupart des hebergeurs le font deja.)
+
+  Sur Android (Chrome) : ouvrir l'URL -> invite d'installation, ou menu > Installer.
+  Sur iPhone (Safari)  : Partager -> « Sur l'ecran d'accueil ».
+
+METTRE A JOUR L'APP
+  Apres avoir regenere index.html, change la version du cache dans sw.js
+  (CACHE = "ajm-v1" -> "ajm-v2"). Au prochain chargement en ligne, l'app
+  proposera « Une nouvelle version est prete — Recharger ».
+
+NOTE
+  index.html s'ouvre aussi directement depuis le disque (double-clic) : l'app
+  fonctionne, mais n'est alors PAS installable (le service worker ne s'active pas
+  hors d'un contexte securise). C'est normal.
+
+  Les traductions de faux-sentiments sont une premiere proposition, a faire
+  valider par une personne formee en Communication NonViolente.

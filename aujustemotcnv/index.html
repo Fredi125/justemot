@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Au juste mot — La CNV appliquée</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F5EFE3">
+<meta name="description" content="Comprendre le langage émotionnel : relier chaque nuance à sa famille de sentiments et au besoin qu'elle révèle.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Au juste mot">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5EFE3; --paper-2:#FBF7EF; --ink:#2A2520; --ink-soft:#6B6258;
+  --line:rgba(42,37,32,.12); --line-2:rgba(42,37,32,.20);
+  --sat:#B07A20; --sat-bg:#F2E4C6; --sat-ink:#7A5310;
+  --insat:#4F6E7B; --insat-bg:#DCE7EA; --insat-ink:#33505C;
+  --faux:#A6553B; --faux-bg:#EEDBD0; --faux-ink:#7C3C28;
+  --besoin:#5A7A4F; --besoin-bg:#DDE7D5; --besoin-ink:#3E5836;
+  --shadow:0 1px 0 rgba(42,37,32,.04), 0 12px 30px -18px rgba(42,37,32,.45);
+  --r:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;color:var(--ink);background:var(--paper);
+  background-image:radial-gradient(1200px 600px at 80% -10%, #FCF8F0 0%, transparent 60%),
+                   radial-gradient(900px 500px at -10% 110%, #F0E8D7 0%, transparent 55%);
+  line-height:1.5;min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:760px;margin:0 auto;padding:22px 18px 90px}
+header.app{margin:6px 0 14px}
+.kicker{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2rem,7vw,2.9rem);line-height:1.02;margin:.15em 0 .15em;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--sat-ink)}
+.lede{color:var(--ink-soft);max-width:52ch;margin:.2em 0 0;font-size:1.02rem}
+nav.tabs{display:flex;gap:6px;margin:18px 0 10px;background:var(--paper-2);border:1px solid var(--line);
+  border-radius:999px;padding:5px;position:sticky;top:8px;z-index:20;box-shadow:var(--shadow)}
+nav.tabs button{flex:1;border:0;background:transparent;font-family:inherit;font-size:.93rem;font-weight:700;
+  color:var(--ink-soft);padding:11px 6px;border-radius:999px;cursor:pointer;transition:.18s}
+nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+nav.tabs button:focus-visible{outline:2px solid var(--sat);outline-offset:2px}
+/* selecteur d'accord */
+.genre{display:flex;align-items:center;gap:10px;margin:0 2px 16px;flex-wrap:wrap}
+.genre .lbl{font-size:.82rem;color:var(--ink-soft);font-weight:700}
+.seg{display:inline-flex;background:var(--paper-2);border:1px solid var(--line-2);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;font-family:inherit;font-weight:700;font-size:.85rem;color:var(--ink-soft);
+  padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.genre .hint{font-size:.76rem;color:var(--ink-soft)}
+.panel{display:none;animation:rise .35s ease both}
+.panel.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.muted{color:var(--ink-soft)} .small{font-size:.86rem}
+button.pill{font-family:inherit;cursor:pointer;border-radius:999px;border:1px solid var(--line-2);
+  background:var(--paper-2);color:var(--ink);padding:9px 14px;font-weight:700;font-size:.9rem;transition:.16s}
+button.pill:hover{border-color:var(--ink)}
+button.pill[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.v-sat{--c:var(--sat);--cb:var(--sat-bg);--ci:var(--sat-ink)}
+.v-insat{--c:var(--insat);--cb:var(--insat-bg);--ci:var(--insat-ink)}
+.v-faux{--c:var(--faux);--cb:var(--faux-bg);--ci:var(--faux-ink)}
+.v-besoin{--c:var(--besoin);--cb:var(--besoin-bg);--ci:var(--besoin-ink)}
+.tag{display:inline-flex;align-items:center;gap:7px;font-size:.74rem;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--ci);background:var(--cb);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);
+  padding:5px 10px;border-radius:999px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--c);flex:0 0 auto}
+.dot.ring{background:transparent;border:2.5px solid var(--c)}
+.search{display:flex;gap:10px;align-items:center;background:var(--paper-2);border:1px solid var(--line-2);
+  border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.search input{border:0;background:transparent;font-family:inherit;font-size:1.05rem;color:var(--ink);width:100%;outline:none}
+.search svg{flex:0 0 auto;opacity:.5}
+.filters{margin:14px 0 6px}
+.families{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:14px}
+.fam{cursor:pointer;text-align:left;border:1px solid var(--line);background:var(--paper-2);border-radius:14px;
+  padding:14px;transition:.16s;border-left:5px solid var(--c)}
+.fam:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.fam h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.18rem;margin:.1em 0 .15em}
+.fam .count{font-size:.8rem;color:var(--ink-soft)}
+.words{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.word{cursor:pointer;font-family:inherit;font-size:.98rem;border:1px solid var(--line-2);background:var(--paper-2);
+  color:var(--ink);border-radius:999px;padding:8px 13px;transition:.14s}
+.word:hover{background:var(--cb);border-color:var(--c)}
+.word.multi::after{content:"✦";margin-left:6px;color:var(--sat);font-size:.8em}
+.backlink{display:inline-flex;gap:8px;align-items:center;background:none;border:0;font-family:inherit;font-weight:700;
+  color:var(--ink-soft);cursor:pointer;padding:6px 0;font-size:.95rem}
+.backlink:hover{color:var(--ink)}
+.detail h2{font-family:"Fraunces",serif;font-weight:500;font-size:2.1rem;margin:.1em 0 .3em;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.speak{border:1px solid var(--line-2);background:var(--paper-2);border-radius:50%;width:42px;height:42px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem}
+.speak:hover{background:var(--cb)}
+.belongs{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.belongs .b{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--paper-2);border-left:5px solid var(--c);cursor:pointer;text-align:left;font-family:inherit;width:100%}
+.belongs .b strong{font-family:"Fraunces",serif;font-weight:500;font-size:1.05rem}
+.insight{margin-top:16px;background:var(--sat-bg);border:1px solid color-mix(in srgb,var(--sat) 30%,transparent);
+  border-radius:14px;padding:14px 16px;color:var(--sat-ink)}
+.insight strong{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{font-family:inherit;cursor:pointer;border-radius:999px;padding:8px 13px;font-weight:700;font-size:.9rem;
+  border:1px solid color-mix(in srgb,var(--c) 38%,transparent);background:var(--cb);color:var(--ci);transition:.14s}
+.chip:hover{filter:brightness(.97);border-color:var(--c)}
+.tmpl{margin-top:16px;padding:14px 16px;border:1px dashed var(--line-2);border-radius:14px;background:var(--paper-2)}
+.tmpl em{font-style:italic}
+.warn{margin-top:14px;font-size:.84rem;color:var(--faux-ink);background:var(--faux-bg);border-radius:12px;padding:10px 13px;
+  border:1px solid color-mix(in srgb,var(--faux) 25%,transparent)}
+.game-stage{text-align:center;padding:8px 0 6px}
+.game-card{padding:26px 20px}
+.prompt-label{font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+.prompt-word{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.2rem,10vw,3.4rem);line-height:1;margin:.18em 0 .1em}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+@media(max-width:430px){.opts{grid-template-columns:1fr}}
+.opt{font-family:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;border:1.5px solid var(--line-2);
+  background:var(--paper-2);color:var(--ink);border-radius:14px;padding:16px;transition:.15s}
+.opt:hover{border-color:var(--ink);transform:translateY(-1px)}
+.opt.good{background:var(--besoin-bg);border-color:var(--besoin);color:var(--besoin-ink)}
+.opt.bad{background:var(--faux-bg);border-color:var(--faux);color:var(--faux-ink)}
+.opt:disabled{cursor:default;opacity:.9}
+.opt.dim{opacity:.4}
+.scorebar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.score{font-weight:700}
+.feedback{margin-top:18px;min-height:6px}.feedback .insight{margin-top:0}.next{margin-top:18px}
+.step h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.5rem;margin:.1em 0 .5em}
+.choices{display:grid;gap:10px;margin-top:6px}
+.choice{font-family:inherit;text-align:left;cursor:pointer;border:1px solid var(--line-2);background:var(--paper-2);
+  color:var(--ink);border-radius:14px;padding:16px;font-size:1.05rem;font-weight:700;transition:.15s;display:flex;align-items:center;gap:12px}
+.choice:hover{transform:translateY(-1px);border-color:var(--ink)}
+.choice .sub{font-weight:400;color:var(--ink-soft);font-size:.9rem;display:block;margin-top:2px}
+.progress{display:flex;gap:6px;margin-bottom:18px}
+.progress span{height:5px;flex:1;border-radius:3px;background:var(--line)}
+.progress span.on{background:var(--ink)}
+.reflect{padding:20px}.reflect .picked{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.foot{margin-top:26px;border-top:1px solid var(--line);padding-top:16px;color:var(--ink-soft);font-size:.84rem}
+.foot a{color:var(--ink-soft)}
+.disclaimer{margin-top:10px;font-size:.82rem;color:var(--ink-soft)}
+.credit{margin-top:14px;font-size:.82rem;color:var(--ink-soft)}
+.credit a{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+/* bandeaux PWA */
+.installbar{display:flex;align-items:center;gap:12px;margin:0 2px 14px;padding:11px 14px;border-radius:14px;
+  background:var(--sat-bg);border:1px solid color-mix(in srgb,var(--sat) 30%,transparent);color:var(--sat-ink);
+  font-size:.92rem;font-weight:700;box-shadow:var(--shadow)}
+.installbar[hidden]{display:none}
+.installbar .pill{margin-left:auto;border-color:var(--sat-ink);background:var(--paper-2);color:var(--sat-ink);white-space:nowrap}
+.installbar .x{border:0;background:transparent;cursor:pointer;color:inherit;font-size:1rem;padding:4px 2px;line-height:1}
+.installbar.upd{background:var(--insat-bg);border-color:color-mix(in srgb,var(--insat) 30%,transparent);color:var(--insat-ink)}
+.installbar.upd .pill{border-color:var(--insat-ink);color:var(--insat-ink)}
+.offline-dot{display:none;align-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--insat-ink);margin:0 2px 12px}
+.offline-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--insat)}
+body.offline .offline-dot{display:inline-flex}
+/* === clarification, définitions, progression (étapes 1-4) === */
+.primer{margin:14px 0 0;border:1px solid var(--line);border-radius:12px;background:var(--paper-2);padding:0 14px}
+.primer summary{cursor:pointer;font-weight:700;padding:12px 0;color:var(--ink);list-style:none}
+.primer summary::-webkit-details-marker{display:none}
+.primer summary::before{content:"›";display:inline-block;margin-right:8px;transition:transform .2s;color:var(--ink-soft)}
+.primer[open] summary::before{transform:rotate(90deg)}
+.primer p{margin:0 0 14px;color:var(--ink-soft);font-size:.95rem;line-height:1.5}
+.famhead{grid-column:1/-1;margin:6px 2px 0}
+.famhead h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.25rem;margin:0}
+.famhead p{margin:.1em 0 0;color:var(--ink-soft);font-size:.88rem}
+.famdef{margin:10px 0 0;color:var(--ink-soft);font-size:.98rem;line-height:1.55;font-style:italic}
+.assoc-seg{width:100%}
+.assoc-seg button{flex:1}
+.progress-card{padding:16px 18px;margin:14px 0 0}
+.pc-title{font-weight:700;font-size:.92rem;margin-bottom:12px}
+.pc-note{margin:12px 0 0;color:var(--ink-soft);font-size:.8rem;line-height:1.45}
+.prog{margin:10px 0}
+.prog-top{display:flex;justify-content:space-between;font-size:.82rem;color:var(--ink-soft);font-weight:700;margin-bottom:5px}
+.prog-track{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+.prog-fill{height:100%;background:var(--sat);border-radius:999px;transition:width .4s ease}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="app">
+    <div class="kicker">Communication bienveillante · CNV</div>
+    <h1>Au juste <em>mot</em></h1>
+    <p class="lede">Relier chaque nuance émotionnelle à sa famille et au besoin qu'elle révèle — pour affiner les mots et mieux se comprendre.</p>
+  </header>
+
+  <div id="installBar" class="installbar" hidden>
+    <span>Installer « Au juste mot » sur l'appareil</span>
+    <button class="pill" id="installBtn">Installer</button>
+    <button class="x" id="installClose" aria-label="Masquer">✕</button>
+  </div>
+  <div id="iosHint" class="installbar" hidden>
+    <span>Pour l'installer : touche <strong>Partager</strong> puis « <strong>Sur l'écran d'accueil</strong> ».</span>
+    <button class="x" id="iosClose" aria-label="Masquer" style="margin-left:auto">✕</button>
+  </div>
+  <div id="updateBar" class="installbar upd" hidden>
+    <span>Une nouvelle version est prête.</span>
+    <button class="pill" id="updateBtn">Recharger</button>
+  </div>
+  <div class="offline-dot">Hors ligne — l'app fonctionne quand même.</div>
+
+  <nav class="tabs" role="tablist" aria-label="Modes">
+    <button role="tab" id="tab-explorer" aria-controls="p-explorer" aria-selected="true" onclick="setMode('explorer')">Explorer</button>
+    <button role="tab" id="tab-associer" aria-controls="p-associer" aria-selected="false" onclick="setMode('associer')">Associer</button>
+    <button role="tab" id="tab-situer" aria-controls="p-situer" aria-selected="false" onclick="setMode('situer')">Me situer</button>
+    <button role="tab" id="tab-demeler" aria-controls="p-demeler" aria-selected="false" onclick="setMode('demeler')">Vrai/faux</button>
+  </nav>
+
+  <div class="genre" role="group" aria-label="Accord grammatical">
+    <span class="lbl">Accord&nbsp;:</span>
+    <div class="seg">
+      <button aria-pressed="false" onclick="setGenre('f')">Féminin</button>
+      <button aria-pressed="false" onclick="setGenre('m')">Masculin</button>
+      <button aria-pressed="true"  onclick="setGenre('n')">Neutre</button>
+    </div>
+    <span class="hint" id="genreHint">écriture inclusive (point médian)</span>
+  </div>
+
+  <!-- EXPLORER -->
+  <section class="panel active" id="p-explorer" role="tabpanel" aria-labelledby="tab-explorer">
+    <div id="explorer-home">
+      <div class="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="q" type="search" placeholder="Chercher un mot… (ex. tonifié)" autocomplete="off" oninput="onSearch(this.value)" aria-label="Chercher un mot">
+      </div>
+      <div class="filters row" id="vfilters">
+        <button class="pill" aria-pressed="true" data-v="all" onclick="setFilter('all')">Tout</button>
+        <button class="pill" aria-pressed="false" data-v="sat" onclick="setFilter('sat')">Besoins comblés</button>
+        <button class="pill" aria-pressed="false" data-v="insat" onclick="setFilter('insat')">Besoins non comblés</button>
+        <button class="pill" aria-pressed="false" data-v="besoin" onclick="setFilter('besoin')">Besoins</button>
+        <button class="pill" aria-pressed="false" data-v="faux" onclick="setFilter('faux')">À traduire</button>
+      </div>
+      <div id="progressCard"></div>
+      <details class="primer">
+        <summary>Sentiment ou besoin&nbsp;? La différence en 10&nbsp;secondes</summary>
+        <p>Un <strong>sentiment</strong> dit ce que je <em>ressens</em> — c'est un signal (joie, colère, lassitude). Un <strong>besoin</strong> dit ce qui est <em>en jeu dessous</em> — c'est le levier (repos, respect, lien). Le sentiment fait signe&nbsp;; le besoin montre la direction.</p>
+      </details>
+      <div id="searchResults"></div>
+      <div class="families" id="families"></div>
+    </div>
+    <div id="explorer-detail" style="display:none"></div>
+  </section>
+
+  <!-- ASSOCIER -->
+  <section class="panel" id="p-associer" role="tabpanel" aria-labelledby="tab-associer">
+    <div class="seg assoc-seg" role="group" aria-label="Type d'association" style="display:flex;margin-bottom:12px">
+      <button aria-pressed="true" onclick="setAssoc('sentiments')">Sentiments</button>
+      <button aria-pressed="false" onclick="setAssoc('besoins')">Besoins</button>
+    </div>
+    <div class="scorebar">
+      <span class="tag v-sat" id="assocTag"><span class="dot"></span>Relier un sentiment</span>
+      <span class="score" id="score">0 / 0</span>
+    </div>
+    <div class="card game-card">
+      <div class="game-stage"><div class="prompt-label" id="assocPrompt">À quelle famille relier&nbsp;?</div><div class="prompt-word" id="gameWord">—</div></div>
+      <div class="opts" id="gameOpts"></div>
+      <div class="feedback" id="gameFeedback" aria-live="polite"></div>
+      <div class="next" id="gameNext"></div>
+    </div>
+    <p class="disclaimer" id="assocDisc">Chaque mot a sa famille principale — à toi de la retrouver.</p>
+  </section>
+
+  <!-- VRAI OU FAUX SENTIMENT -->
+  <section class="panel" id="p-demeler" role="tabpanel" aria-labelledby="tab-demeler">
+    <div class="scorebar">
+      <span class="tag v-faux"><span class="dot ring"></span>Vrai ou faux sentiment</span>
+      <span class="score" id="dScore">0 / 0</span>
+    </div>
+    <div class="card game-card">
+      <div class="game-stage"><div class="prompt-label">Vrai sentiment, ou jugement déguisé&nbsp;?</div><div class="prompt-word" id="dWord">—</div></div>
+      <div class="opts" id="dOpts"></div>
+      <div class="feedback" id="dFeedback" aria-live="polite"></div>
+      <div class="next" id="dNext"></div>
+    </div>
+    <p class="disclaimer">Un «&nbsp;faux sentiment&nbsp;» n'est pas une faute&nbsp;: c'est un mot qui cache un vrai ressenti et un besoin. Le repérer aide à se dire plus juste.</p>
+  </section>
+
+  <!-- ME SITUER -->
+  <section class="panel" id="p-situer" role="tabpanel" aria-labelledby="tab-situer">
+    <div class="progress" id="situerProgress"><span></span><span></span><span></span></div>
+    <div class="card" style="padding:20px" id="situerBody"></div>
+  </section>
+
+  <div class="foot">
+    Vocabulaire tiré de <a href="https://www.dialogo.ca" target="_blank" rel="noopener">Dialogo</a> — « Liste de sentiments et besoins » (2022), inspirée de la Communication NonViolente de Marshall Rosenberg. Les traductions de faux-sentiments sont une première proposition, à valider avec une personne formée en CNV.
+    <div class="disclaimer">Outil de littératie émotionnelle. Il ne remplace pas l'accompagnement d'une personne de confiance ou d'un·e professionnel·le. En situation de danger, cherche du soutien autour de toi.</div>
+    <div class="credit">Une réalisation de <strong>FMP InfoSolutions</strong>. Un commentaire, une idée, une coquille&nbsp;? Écris à <a href="mailto:Fred@fmpinfo.ca?subject=Au%20juste%20mot">Fred@fmpinfo.ca</a>.</div>
+  </div>
+</div>
+
+<script>
+const DATA  = {"meta": {"version": "1.0.0", "langue": "fr-CA", "source": "Dialogo — Liste de sentiments et besoins (2022)", "sourceUrl": "https://www.dialogo.ca", "cadre": "Communication NonViolente (CNV) — Marshall Rosenberg", "note": "Les listes sont au féminin dans la source. Le champ 'genre' documente cet état afin qu'une future version puisse offrir l'accord masculin/neutre.", "genre": "feminin"}, "sentiments": {"besoins_satisfaits": [{"id": "joie", "label": "Joie", "mots": ["amusée", "charmée", "chatouillée", "contente", "égayée", "enchantée", "espiègle", "gaie", "heureuse", "hilare", "joyeuse", "radieuse", "ravie", "rayonnante", "réjouie"]}, {"id": "vitalite", "label": "Vitalité", "mots": ["animée", "aventureuse", "avide", "emballée", "en expansion", "en pleine forme", "énergique", "enthousiaste", "éveillée", "exaltée", "excitée", "exubérante", "fougueuse", "pétillante", "pleine d'élan", "rafraîchie", "revigorée", "surexcitée", "survoltée", "tonifiée", "vibrante", "vivante", "vive", "vivifiée"]}, {"id": "engage", "label": "Engagé", "mots": ["absorbée", "alerte", "captivée", "créative", "curieuse", "déterminée", "impliquée", "intéressée", "intriguée", "mobilisée", "motivée", "ouverte", "passionnée", "pleine de ferveur", "réceptive", "stimulée", "zélée"]}, {"id": "tranquillite", "label": "Tranquillité", "mots": ["à l'aise", "apaisée", "bien disposée", "calme", "centrée", "comblée", "confortable", "décontractée", "détendue", "disposée", "en paix", "épanouie", "nourrie", "paisible", "posée", "satisfaite", "sereine", "soulagée", "tranquille"]}, {"id": "affection", "label": "Affection", "mots": ["adoucie", "aimante", "attendrie", "chaleureuse", "émue", "pleine d'amour", "proche", "réconfortée", "reliée", "tendre", "touchée"]}, {"id": "gratitude", "label": "Gratitude", "mots": ["chanceuse", "pleine de gratitude", "privilégiée", "reconnaissante"]}, {"id": "emerveillement", "label": "Émerveillement", "mots": ["admirative", "ébahie", "éblouie", "émerveillée", "épatée", "fascinée", "impressionnée", "inspirée", "subjuguée", "transportée"]}, {"id": "confiance", "label": "Confiance", "mots": ["à la hauteur", "assurée", "capable", "confiante", "confortée", "encouragée", "fière", "libre", "optimiste", "pleine d'espoir", "rassurée", "sécurisée", "solide", "sûre"]}], "besoins_insatisfaits": [{"id": "triste", "label": "Triste", "mots": ["abattue", "accablée", "affligée", "attristée", "bouleversée", "avoir le cœur gros", "chagrinée", "consternée", "contrariée", "dans tous mes états", "découragée", "déchirée", "déçue", "défaite", "démotivée", "démunie", "dépitée", "déprimée", "désappointée", "désenchantée", "désespérée", "désillusionnée", "désolée", "ébranlée", "en détresse", "ennuyée", "éteinte", "impuissante", "inconfortable", "mal à l'aise", "malheureuse", "mécontente", "navrée", "peinée", "perturbée", "préoccupée", "seule", "vulnérable"]}, {"id": "peur", "label": "Peur", "mots": ["affolée", "alarmée", "angoissée", "anxieuse", "apeurée", "bloquée", "chavirée", "craintive", "déchirée", "effarouchée", "effrayée", "embarrassée", "en désarroi", "épouvantée", "fébrile", "horrifiée", "inquiète", "mal à l'aise", "nerveuse", "paniquée", "perturbée", "pleine de trac", "préoccupée", "prudente", "réticente", "secouée", "soucieuse", "sur ses gardes", "terrifiée", "tourmentée", "transie", "tremblante", "vulnérable"]}, {"id": "colere", "label": "Colère", "mots": ["à bout", "agacée", "agitée", "amère", "bouillonnante", "choquée", "contractée", "contrariée", "crispée", "d'humeur massacrante", "en avoir assez", "en avoir marre", "énervée", "en pétard", "exaspérée", "excédée", "fâchée", "froissée", "frustrée", "furieuse", "grognonne", "hors de ses gonds", "impatiente", "irritée", "mécontente", "offusquée", "outrée", "pleine de ressentiment", "révoltée", "scandalisée", "survoltée", "sur les nerfs", "susceptible", "tendue", "titillée"]}, {"id": "confuse", "label": "Confuse", "mots": ["ambivalente", "bloquée", "confondue", "déboussolée", "déchirée", "déconcertée", "dépaysée", "déroutée", "désemparée", "désorientée", "déstabilisée", "embêtée", "étourdie", "hébétée", "hésitante", "incertaine", "indécise", "partagée", "perdue", "perplexe", "sceptique", "tiède", "tiraillée", "tracassée", "troublée"]}, {"id": "deconnectee", "label": "Détachement émotionnel", "mots": ["à l'écart", "amorphe", "apathique", "blasée", "détachée", "distante", "distraite", "engourdie", "ennuyée", "éteinte", "froide", "indifférente", "sans intérêt", "retirée", "timide"]}, {"id": "degoutee", "label": "Dégoûtée", "mots": ["dégoûtée", "écœurée", "pleine de répulsion", "rebutée", "révulsée"]}, {"id": "fatiguee", "label": "Fatiguée", "mots": ["au bout du rouleau", "brûlée", "claquée", "crevée", "dépassée", "endormie", "épuisée", "fatiguée", "lasse", "léthargique", "ramollie", "saturée", "surmenée", "vannée", "vidée"]}, {"id": "surprise", "label": "Surprise", "mots": ["abasourdie", "ahurie", "assommée", "bouche bée", "ébahie", "étonnée", "gênée", "impressionnée", "interpelée", "intriguée", "le souffle coupé", "prise au dépourvu", "prise de court", "renversée", "saisie", "secouée", "stupéfaite", "submergée", "surprise"]}]}, "faux_sentiments": {"note": "Mots qui expriment des jugements, des interprétations ou des évaluations déguisées en sentiments. En CNV, on les traduit en (1) un vrai sentiment et (2) un besoin sous-jacent.", "mots": ["abandonnée", "abusée", "acculée", "attaquée", "blâmée", "blessée", "contrôlée", "coupable", "critiquée", "délaissée", "détestée", "dévalorisée", "diminuée", "dominée", "écartée", "écrasée", "étouffée", "exclue", "flouée", "harcelée", "honteuse", "humiliée", "ignorée", "importante", "inadéquate", "incompétente", "incomprise", "indigne", "insultée", "intimidée", "invisible", "isolée", "jugée", "larguée", "manipulée", "maternée", "menacée", "méprisée", "minable", "mise sous pression", "négligée", "niée", "obligée", "pas aimée", "pas comprise", "pas considérée", "pas écoutée", "pas entendue", "pas respectée", "pas utile", "pas vue", "rabaissée", "rejetée", "ridiculisée", "stupide", "trahie", "utilisée", "valorisée"]}, "besoins": [{"id": "survie", "label": "Survie (au sens large)", "mots": ["Abri", "Air", "Eau", "Environnement sain", "Espace", "Exercice", "Lumière", "Mouvement", "Nourriture", "Chaleur", "Confort", "Contact", "Détente", "Douceur", "Tendresse", "Toucher", "Protection", "Repos", "Sécurité", "Soins", "Temps"]}, {"id": "relationnel", "label": "Relationnel", "mots": ["Acceptation", "Accueil", "Adaptation", "Affection", "Amour", "Appartenance", "Attention", "Bienveillance", "Chaleur humaine", "Changement", "Communauté", "Communication", "Compréhension", "Concertation", "Confiance", "Considération", "Contribution", "Connexion", "Contact", "Continuité", "Coopération", "Délicatesse", "Discrétion", "Direction", "Douceur", "Écoute", "Égalité", "Empathie", "Engagement", "Équité", "Fiabilité", "Flexibilité", "Humilité", "Inclusion", "Intimité", "Leadership", "Lien", "Loyauté", "Mutualité", "Ouverture", "Partage", "Présence", "Proximité", "Réciprocité", "Réconciliation", "Réconfort", "Reconnaissance", "Respect", "Sincérité", "Solidarité", "Souplesse", "Soutien", "Stabilité", "Transparence"]}, {"id": "integrite", "label": "Intégrité", "mots": ["Aisance", "Assurance", "Authenticité", "Connaissance de soi", "Détachement", "Dignité", "Équilibre", "Estime de soi", "Honnêteté", "Quiétude", "Sens", "Respect de soi", "Respect de son rythme", "Respect de ses limites", "Sens de sa place", "Sens de sa valeur"]}, {"id": "expression", "label": "Expression de soi", "mots": ["Accomplissement", "Action", "Clarté", "Cohérence", "Compréhension", "Connaissance", "Conscience", "Créativité", "Croissance", "Évolution", "Expression sexuelle", "Guérison", "Lucidité", "Nouveauté", "Réalisation", "Recul", "Responsabilité", "Simplicité", "Spontanéité", "Stimulation"]}, {"id": "autonomie", "label": "Autonomie", "mots": ["Affirmation de soi", "Apprentissage", "Apprivoisement", "Appropriation de son pouvoir", "Calme", "Choix", "Connexion à soi", "Découverte", "Empuissancement", "Espace pour soi", "Interdépendance", "Liberté", "Maîtrise", "Motivation", "Solitude", "Tranquillité", "Vitalité"]}, {"id": "celebration", "label": "Célébration", "mots": ["Abondance", "Beauté", "Bonté", "Communion", "Deuil", "Espoir", "Goût d'expérimenter l'intensité de la vie", "Gratitude", "Harmonie", "Humour", "Inspiration", "Jeu", "Ordre", "Paix", "Plaisir", "Présence", "Sacré", "Sagesse", "Sens", "Sérénité", "Silence", "Spiritualité", "Transcendance", "Unité"]}]};
+const GENRE = {"abandonnée": {"m": "abandonné", "n": "abandonné·e"}, "abasourdie": {"m": "abasourdi", "n": "abasourdi·e"}, "abattue": {"m": "abattu", "n": "abattu·e"}, "absorbée": {"m": "absorbé", "n": "absorbé·e"}, "abusée": {"m": "abusé", "n": "abusé·e"}, "accablée": {"m": "accablé", "n": "accablé·e"}, "acculée": {"m": "acculé", "n": "acculé·e"}, "admirative": {"m": "admiratif", "n": "admiratif·ve"}, "adoucie": {"m": "adouci", "n": "adouci·e"}, "affligée": {"m": "affligé", "n": "affligé·e"}, "affolée": {"m": "affolé", "n": "affolé·e"}, "agacée": {"m": "agacé", "n": "agacé·e"}, "agitée": {"m": "agité", "n": "agité·e"}, "ahurie": {"m": "ahuri", "n": "ahuri·e"}, "aimante": {"m": "aimant", "n": "aimant·e"}, "alarmée": {"m": "alarmé", "n": "alarmé·e"}, "ambivalente": {"m": "ambivalent", "n": "ambivalent·e"}, "amusée": {"m": "amusé", "n": "amusé·e"}, "amère": {"m": "amer", "n": "amer·ère"}, "angoissée": {"m": "angoissé", "n": "angoissé·e"}, "animée": {"m": "animé", "n": "animé·e"}, "anxieuse": {"m": "anxieux", "n": "anxieux·se"}, "apaisée": {"m": "apaisé", "n": "apaisé·e"}, "apeurée": {"m": "apeuré", "n": "apeuré·e"}, "assommée": {"m": "assommé", "n": "assommé·e"}, "assurée": {"m": "assuré", "n": "assuré·e"}, "attaquée": {"m": "attaqué", "n": "attaqué·e"}, "attendrie": {"m": "attendri", "n": "attendri·e"}, "attristée": {"m": "attristé", "n": "attristé·e"}, "aventureuse": {"m": "aventureux", "n": "aventureux·se"}, "bien disposée": {"m": "bien disposé", "n": "bien disposé·e"}, "blasée": {"m": "blasé", "n": "blasé·e"}, "blessée": {"m": "blessé", "n": "blessé·e"}, "bloquée": {"m": "bloqué", "n": "bloqué·e"}, "blâmée": {"m": "blâmé", "n": "blâmé·e"}, "bouillonnante": {"m": "bouillonnant", "n": "bouillonnant·e"}, "bouleversée": {"m": "bouleversé", "n": "bouleversé·e"}, "brûlée": {"m": "brûlé", "n": "brûlé·e"}, "captivée": {"m": "captivé", "n": "captivé·e"}, "centrée": {"m": "centré", "n": "centré·e"}, "chagrinée": {"m": "chagriné", "n": "chagriné·e"}, "chaleureuse": {"m": "chaleureux", "n": "chaleureux·se"}, "chanceuse": {"m": "chanceux", "n": "chanceux·se"}, "charmée": {"m": "charmé", "n": "charmé·e"}, "chatouillée": {"m": "chatouillé", "n": "chatouillé·e"}, "chavirée": {"m": "chaviré", "n": "chaviré·e"}, "choquée": {"m": "choqué", "n": "choqué·e"}, "claquée": {"m": "claqué", "n": "claqué·e"}, "comblée": {"m": "comblé", "n": "comblé·e"}, "confiante": {"m": "confiant", "n": "confiant·e"}, "confondue": {"m": "confondu", "n": "confondu·e"}, "confortée": {"m": "conforté", "n": "conforté·e"}, "consternée": {"m": "consterné", "n": "consterné·e"}, "contente": {"m": "content", "n": "content·e"}, "contractée": {"m": "contracté", "n": "contracté·e"}, "contrariée": {"m": "contrarié", "n": "contrarié·e"}, "contrôlée": {"m": "contrôlé", "n": "contrôlé·e"}, "craintive": {"m": "craintif", "n": "craintif·ve"}, "crevée": {"m": "crevé", "n": "crevé·e"}, "crispée": {"m": "crispé", "n": "crispé·e"}, "critiquée": {"m": "critiqué", "n": "critiqué·e"}, "créative": {"m": "créatif", "n": "créatif·ve"}, "curieuse": {"m": "curieux", "n": "curieux·se"}, "diminuée": {"m": "diminué", "n": "diminué·e"}, "disposée": {"m": "disposé", "n": "disposé·e"}, "distante": {"m": "distant", "n": "distant·e"}, "distraite": {"m": "distrait", "n": "distrait·e"}, "dominée": {"m": "dominé", "n": "dominé·e"}, "déboussolée": {"m": "déboussolé", "n": "déboussolé·e"}, "déchirée": {"m": "déchiré", "n": "déchiré·e"}, "déconcertée": {"m": "déconcerté", "n": "déconcerté·e"}, "décontractée": {"m": "décontracté", "n": "décontracté·e"}, "découragée": {"m": "découragé", "n": "découragé·e"}, "défaite": {"m": "défait", "n": "défait·e"}, "dégoûtée": {"m": "dégoûté", "n": "dégoûté·e"}, "délaissée": {"m": "délaissé", "n": "délaissé·e"}, "démotivée": {"m": "démotivé", "n": "démotivé·e"}, "démunie": {"m": "démuni", "n": "démuni·e"}, "dépassée": {"m": "dépassé", "n": "dépassé·e"}, "dépaysée": {"m": "dépaysé", "n": "dépaysé·e"}, "dépitée": {"m": "dépité", "n": "dépité·e"}, "déprimée": {"m": "déprimé", "n": "déprimé·e"}, "déroutée": {"m": "dérouté", "n": "dérouté·e"}, "désappointée": {"m": "désappointé", "n": "désappointé·e"}, "désemparée": {"m": "désemparé", "n": "désemparé·e"}, "désenchantée": {"m": "désenchanté", "n": "désenchanté·e"}, "désespérée": {"m": "désespéré", "n": "désespéré·e"}, "désillusionnée": {"m": "désillusionné", "n": "désillusionné·e"}, "désolée": {"m": "désolé", "n": "désolé·e"}, "désorientée": {"m": "désorienté", "n": "désorienté·e"}, "déstabilisée": {"m": "déstabilisé", "n": "déstabilisé·e"}, "détachée": {"m": "détaché", "n": "détaché·e"}, "détendue": {"m": "détendu", "n": "détendu·e"}, "déterminée": {"m": "déterminé", "n": "déterminé·e"}, "détestée": {"m": "détesté", "n": "détesté·e"}, "dévalorisée": {"m": "dévalorisé", "n": "dévalorisé·e"}, "déçue": {"m": "déçu", "n": "déçu·e"}, "effarouchée": {"m": "effarouché", "n": "effarouché·e"}, "effrayée": {"m": "effrayé", "n": "effrayé·e"}, "emballée": {"m": "emballé", "n": "emballé·e"}, "embarrassée": {"m": "embarrassé", "n": "embarrassé·e"}, "embêtée": {"m": "embêté", "n": "embêté·e"}, "enchantée": {"m": "enchanté", "n": "enchanté·e"}, "encouragée": {"m": "encouragé", "n": "encouragé·e"}, "endormie": {"m": "endormi", "n": "endormi·e"}, "engourdie": {"m": "engourdi", "n": "engourdi·e"}, "ennuyée": {"m": "ennuyé", "n": "ennuyé·e"}, "exaltée": {"m": "exalté", "n": "exalté·e"}, "exaspérée": {"m": "exaspéré", "n": "exaspéré·e"}, "excitée": {"m": "excité", "n": "excité·e"}, "exclue": {"m": "exclu", "n": "exclu·e"}, "excédée": {"m": "excédé", "n": "excédé·e"}, "exubérante": {"m": "exubérant", "n": "exubérant·e"}, "fascinée": {"m": "fasciné", "n": "fasciné·e"}, "fatiguée": {"m": "fatigué", "n": "fatigué·e"}, "fière": {"m": "fier", "n": "fier·ère"}, "flouée": {"m": "floué", "n": "floué·e"}, "fougueuse": {"m": "fougueux", "n": "fougueux·se"}, "froide": {"m": "froid", "n": "froid·e"}, "froissée": {"m": "froissé", "n": "froissé·e"}, "frustrée": {"m": "frustré", "n": "frustré·e"}, "furieuse": {"m": "furieux", "n": "furieux·se"}, "fâchée": {"m": "fâché", "n": "fâché·e"}, "gaie": {"m": "gai", "n": "gai·e"}, "grognonne": {"m": "grognon", "n": "grognon·ne"}, "gênée": {"m": "gêné", "n": "gêné·e"}, "harcelée": {"m": "harcelé", "n": "harcelé·e"}, "heureuse": {"m": "heureux", "n": "heureux·se"}, "honteuse": {"m": "honteux", "n": "honteux·se"}, "horrifiée": {"m": "horrifié", "n": "horrifié·e"}, "humiliée": {"m": "humilié", "n": "humilié·e"}, "hébétée": {"m": "hébété", "n": "hébété·e"}, "hésitante": {"m": "hésitant", "n": "hésitant·e"}, "ignorée": {"m": "ignoré", "n": "ignoré·e"}, "impatiente": {"m": "impatient", "n": "impatient·e"}, "impliquée": {"m": "impliqué", "n": "impliqué·e"}, "importante": {"m": "important", "n": "important·e"}, "impressionnée": {"m": "impressionné", "n": "impressionné·e"}, "impuissante": {"m": "impuissant", "n": "impuissant·e"}, "inadéquate": {"m": "inadéquat", "n": "inadéquat·e"}, "incertaine": {"m": "incertain", "n": "incertain·e"}, "incomprise": {"m": "incompris", "n": "incompris·e"}, "incompétente": {"m": "incompétent", "n": "incompétent·e"}, "indifférente": {"m": "indifférent", "n": "indifférent·e"}, "indécise": {"m": "indécis", "n": "indécis·e"}, "inquiète": {"m": "inquiet", "n": "inquiet·ète"}, "inspirée": {"m": "inspiré", "n": "inspiré·e"}, "insultée": {"m": "insulté", "n": "insulté·e"}, "interpelée": {"m": "interpelé", "n": "interpelé·e"}, "intimidée": {"m": "intimidé", "n": "intimidé·e"}, "intriguée": {"m": "intrigué", "n": "intrigué·e"}, "intéressée": {"m": "intéressé", "n": "intéressé·e"}, "irritée": {"m": "irrité", "n": "irrité·e"}, "isolée": {"m": "isolé", "n": "isolé·e"}, "joyeuse": {"m": "joyeux", "n": "joyeux·se"}, "jugée": {"m": "jugé", "n": "jugé·e"}, "larguée": {"m": "largué", "n": "largué·e"}, "lasse": {"m": "las", "n": "las·se"}, "malheureuse": {"m": "malheureux", "n": "malheureux·se"}, "manipulée": {"m": "manipulé", "n": "manipulé·e"}, "maternée": {"m": "materné", "n": "materné·e"}, "menacée": {"m": "menacé", "n": "menacé·e"}, "mise sous pression": {"m": "mis sous pression", "n": "mis·e sous pression"}, "mobilisée": {"m": "mobilisé", "n": "mobilisé·e"}, "motivée": {"m": "motivé", "n": "motivé·e"}, "mécontente": {"m": "mécontent", "n": "mécontent·e"}, "méprisée": {"m": "méprisé", "n": "méprisé·e"}, "navrée": {"m": "navré", "n": "navré·e"}, "nerveuse": {"m": "nerveux", "n": "nerveux·se"}, "niée": {"m": "nié", "n": "nié·e"}, "nourrie": {"m": "nourri", "n": "nourri·e"}, "négligée": {"m": "négligé", "n": "négligé·e"}, "obligée": {"m": "obligé", "n": "obligé·e"}, "offusquée": {"m": "offusqué", "n": "offusqué·e"}, "outrée": {"m": "outré", "n": "outré·e"}, "ouverte": {"m": "ouvert", "n": "ouvert·e"}, "paniquée": {"m": "paniqué", "n": "paniqué·e"}, "partagée": {"m": "partagé", "n": "partagé·e"}, "pas aimée": {"m": "pas aimé", "n": "pas aimé·e"}, "pas comprise": {"m": "pas compris", "n": "pas compris·e"}, "pas considérée": {"m": "pas considéré", "n": "pas considéré·e"}, "pas entendue": {"m": "pas entendu", "n": "pas entendu·e"}, "pas respectée": {"m": "pas respecté", "n": "pas respecté·e"}, "pas vue": {"m": "pas vu", "n": "pas vu·e"}, "pas écoutée": {"m": "pas écouté", "n": "pas écouté·e"}, "passionnée": {"m": "passionné", "n": "passionné·e"}, "peinée": {"m": "peiné", "n": "peiné·e"}, "perdue": {"m": "perdu", "n": "perdu·e"}, "perturbée": {"m": "perturbé", "n": "perturbé·e"}, "pleine d'amour": {"m": "plein d'amour", "n": "plein·e d'amour"}, "pleine d'espoir": {"m": "plein d'espoir", "n": "plein·e d'espoir"}, "pleine d'élan": {"m": "plein d'élan", "n": "plein·e d'élan"}, "pleine de ferveur": {"m": "plein de ferveur", "n": "plein·e de ferveur"}, "pleine de gratitude": {"m": "plein de gratitude", "n": "plein·e de gratitude"}, "pleine de ressentiment": {"m": "plein de ressentiment", "n": "plein·e de ressentiment"}, "pleine de répulsion": {"m": "plein de répulsion", "n": "plein·e de répulsion"}, "pleine de trac": {"m": "plein de trac", "n": "plein·e de trac"}, "posée": {"m": "posé", "n": "posé·e"}, "prise au dépourvu": {"m": "pris au dépourvu", "n": "pris·e au dépourvu"}, "prise de court": {"m": "pris de court", "n": "pris·e de court"}, "privilégiée": {"m": "privilégié", "n": "privilégié·e"}, "prudente": {"m": "prudent", "n": "prudent·e"}, "préoccupée": {"m": "préoccupé", "n": "préoccupé·e"}, "pétillante": {"m": "pétillant", "n": "pétillant·e"}, "rabaissée": {"m": "rabaissé", "n": "rabaissé·e"}, "radieuse": {"m": "radieux", "n": "radieux·se"}, "rafraîchie": {"m": "rafraîchi", "n": "rafraîchi·e"}, "ramollie": {"m": "ramolli", "n": "ramolli·e"}, "rassurée": {"m": "rassuré", "n": "rassuré·e"}, "ravie": {"m": "ravi", "n": "ravi·e"}, "rayonnante": {"m": "rayonnant", "n": "rayonnant·e"}, "rebutée": {"m": "rebuté", "n": "rebuté·e"}, "reconnaissante": {"m": "reconnaissant", "n": "reconnaissant·e"}, "rejetée": {"m": "rejeté", "n": "rejeté·e"}, "reliée": {"m": "relié", "n": "relié·e"}, "renversée": {"m": "renversé", "n": "renversé·e"}, "retirée": {"m": "retiré", "n": "retiré·e"}, "revigorée": {"m": "revigoré", "n": "revigoré·e"}, "ridiculisée": {"m": "ridiculisé", "n": "ridiculisé·e"}, "réceptive": {"m": "réceptif", "n": "réceptif·ve"}, "réconfortée": {"m": "réconforté", "n": "réconforté·e"}, "réjouie": {"m": "réjoui", "n": "réjoui·e"}, "réticente": {"m": "réticent", "n": "réticent·e"}, "révoltée": {"m": "révolté", "n": "révolté·e"}, "révulsée": {"m": "révulsé", "n": "révulsé·e"}, "saisie": {"m": "saisi", "n": "saisi·e"}, "satisfaite": {"m": "satisfait", "n": "satisfait·e"}, "saturée": {"m": "saturé", "n": "saturé·e"}, "scandalisée": {"m": "scandalisé", "n": "scandalisé·e"}, "secouée": {"m": "secoué", "n": "secoué·e"}, "sereine": {"m": "serein", "n": "serein·e"}, "seule": {"m": "seul", "n": "seul·e"}, "soucieuse": {"m": "soucieux", "n": "soucieux·se"}, "soulagée": {"m": "soulagé", "n": "soulagé·e"}, "stimulée": {"m": "stimulé", "n": "stimulé·e"}, "stupéfaite": {"m": "stupéfait", "n": "stupéfait·e"}, "subjuguée": {"m": "subjugué", "n": "subjugué·e"}, "submergée": {"m": "submergé", "n": "submergé·e"}, "surexcitée": {"m": "surexcité", "n": "surexcité·e"}, "surmenée": {"m": "surmené", "n": "surmené·e"}, "surprise": {"m": "surpris", "n": "surpris·e"}, "survoltée": {"m": "survolté", "n": "survolté·e"}, "sécurisée": {"m": "sécurisé", "n": "sécurisé·e"}, "sûre": {"m": "sûr", "n": "sûr·e"}, "tendue": {"m": "tendu", "n": "tendu·e"}, "terrifiée": {"m": "terrifié", "n": "terrifié·e"}, "tiraillée": {"m": "tiraillé", "n": "tiraillé·e"}, "titillée": {"m": "titillé", "n": "titillé·e"}, "tonifiée": {"m": "tonifié", "n": "tonifié·e"}, "touchée": {"m": "touché", "n": "touché·e"}, "tourmentée": {"m": "tourmenté", "n": "tourmenté·e"}, "tracassée": {"m": "tracassé", "n": "tracassé·e"}, "trahie": {"m": "trahi", "n": "trahi·e"}, "transie": {"m": "transi", "n": "transi·e"}, "transportée": {"m": "transporté", "n": "transporté·e"}, "tremblante": {"m": "tremblant", "n": "tremblant·e"}, "troublée": {"m": "troublé", "n": "troublé·e"}, "utilisée": {"m": "utilisé", "n": "utilisé·e"}, "valorisée": {"m": "valorisé", "n": "valorisé·e"}, "vannée": {"m": "vanné", "n": "vanné·e"}, "vibrante": {"m": "vibrant", "n": "vibrant·e"}, "vidée": {"m": "vidé", "n": "vidé·e"}, "vivante": {"m": "vivant", "n": "vivant·e"}, "vive": {"m": "vif", "n": "vif·ve"}, "vivifiée": {"m": "vivifié", "n": "vivifié·e"}, "zélée": {"m": "zélé", "n": "zélé·e"}, "ébahie": {"m": "ébahi", "n": "ébahi·e"}, "éblouie": {"m": "ébloui", "n": "ébloui·e"}, "ébranlée": {"m": "ébranlé", "n": "ébranlé·e"}, "écartée": {"m": "écarté", "n": "écarté·e"}, "écrasée": {"m": "écrasé", "n": "écrasé·e"}, "écœurée": {"m": "écœuré", "n": "écœuré·e"}, "égayée": {"m": "égayé", "n": "égayé·e"}, "émerveillée": {"m": "émerveillé", "n": "émerveillé·e"}, "émue": {"m": "ému", "n": "ému·e"}, "énervée": {"m": "énervé", "n": "énervé·e"}, "épanouie": {"m": "épanoui", "n": "épanoui·e"}, "épatée": {"m": "épaté", "n": "épaté·e"}, "épouvantée": {"m": "épouvanté", "n": "épouvanté·e"}, "épuisée": {"m": "épuisé", "n": "épuisé·e"}, "éteinte": {"m": "éteint", "n": "éteint·e"}, "étonnée": {"m": "étonné", "n": "étonné·e"}, "étouffée": {"m": "étouffé", "n": "étouffé·e"}, "étourdie": {"m": "étourdi", "n": "étourdi·e"}, "éveillée": {"m": "éveillé", "n": "éveillé·e"}};   // { "fatiguée": {m:"fatigué", n:"fatigué·e"}, ... }
+const FAUX  = {"critiquée": {"sentiments": ["triste", "colere"], "besoins": ["Reconnaissance", "Considération", "Bienveillance", "Acceptation"], "type": "autre", "sensible": false}, "incomprise": {"sentiments": ["triste", "confuse"], "besoins": ["Compréhension", "Considération", "Connexion", "Écoute"], "type": "autre", "sensible": false}, "contrôlée": {"sentiments": ["colere", "peur"], "besoins": ["Appropriation de son pouvoir", "Liberté", "Choix", "Confiance"], "type": "autre", "sensible": false}, "blessée": {"sentiments": ["triste"], "besoins": ["Respect", "Bienveillance", "Considération", "Délicatesse"], "type": "autre", "sensible": false}, "niée": {"sentiments": ["colere", "triste"], "besoins": ["Reconnaissance", "Considération", "Respect", "Sens de sa place"], "type": "autre", "sensible": false}, "exclue": {"sentiments": ["triste"], "besoins": ["Appartenance", "Inclusion", "Connexion", "Acceptation"], "type": "autre", "sensible": false}, "abandonnée": {"sentiments": ["triste", "peur"], "besoins": ["Connexion", "Appartenance", "Soutien", "Sécurité"], "type": "autre", "sensible": false}, "abusée": {"sentiments": ["colere", "peur", "triste"], "besoins": ["Sécurité", "Respect", "Protection", "Dignité"], "type": "autre", "sensible": true}, "acculée": {"sentiments": ["peur", "colere"], "besoins": ["Espace", "Choix", "Liberté", "Soutien"], "type": "autre", "sensible": true}, "attaquée": {"sentiments": ["peur", "colere"], "besoins": ["Sécurité", "Respect", "Bienveillance"], "type": "autre", "sensible": true}, "blâmée": {"sentiments": ["triste", "colere"], "besoins": ["Compréhension", "Équité", "Bienveillance"], "type": "autre", "sensible": false}, "coupable": {"sentiments": ["triste", "confuse"], "besoins": ["Respect de soi", "Bienveillance", "Réconciliation"], "type": "soi", "sensible": false}, "délaissée": {"sentiments": ["triste", "peur"], "besoins": ["Attention", "Présence", "Connexion", "Soutien"], "type": "autre", "sensible": false}, "détestée": {"sentiments": ["triste", "peur"], "besoins": ["Acceptation", "Appartenance", "Bienveillance", "Amour"], "type": "autre", "sensible": false}, "dévalorisée": {"sentiments": ["triste"], "besoins": ["Reconnaissance", "Sens de sa valeur", "Respect"], "type": "autre", "sensible": false}, "diminuée": {"sentiments": ["triste", "colere"], "besoins": ["Respect", "Dignité", "Égalité"], "type": "autre", "sensible": false}, "dominée": {"sentiments": ["colere", "peur"], "besoins": ["Liberté", "Égalité", "Choix", "Appropriation de son pouvoir"], "type": "autre", "sensible": false}, "écartée": {"sentiments": ["triste"], "besoins": ["Inclusion", "Appartenance", "Présence"], "type": "autre", "sensible": false}, "écrasée": {"sentiments": ["fatiguee", "triste"], "besoins": ["Soutien", "Respect", "Espace"], "type": "autre", "sensible": false}, "étouffée": {"sentiments": ["peur", "colere"], "besoins": ["Espace", "Liberté", "Choix"], "type": "autre", "sensible": false}, "flouée": {"sentiments": ["colere", "triste"], "besoins": ["Honnêteté", "Équité", "Confiance"], "type": "autre", "sensible": false}, "harcelée": {"sentiments": ["peur", "fatiguee", "colere"], "besoins": ["Paix", "Respect", "Espace", "Sécurité"], "type": "autre", "sensible": true}, "honteuse": {"sentiments": ["triste", "peur"], "besoins": ["Acceptation", "Appartenance", "Respect de soi", "Dignité"], "type": "soi", "sensible": false}, "humiliée": {"sentiments": ["triste", "colere"], "besoins": ["Respect", "Dignité", "Bienveillance"], "type": "autre", "sensible": false}, "ignorée": {"sentiments": ["triste", "colere"], "besoins": ["Considération", "Attention", "Écoute"], "type": "autre", "sensible": false}, "importante": {"sentiments": ["joie", "tranquillite"], "besoins": ["Considération", "Sens de sa valeur", "Appartenance"], "type": "comble", "sensible": false}, "inadéquate": {"sentiments": ["triste", "confuse"], "besoins": ["Acceptation", "Maîtrise", "Estime de soi"], "type": "soi", "sensible": false}, "incompétente": {"sentiments": ["triste", "confuse"], "besoins": ["Maîtrise", "Apprentissage", "Soutien"], "type": "soi", "sensible": false}, "indigne": {"sentiments": ["triste"], "besoins": ["Estime de soi", "Acceptation", "Sens de sa valeur"], "type": "soi", "sensible": false}, "insultée": {"sentiments": ["colere", "triste"], "besoins": ["Respect", "Bienveillance", "Attention"], "type": "autre", "sensible": false}, "intimidée": {"sentiments": ["peur"], "besoins": ["Sécurité", "Respect", "Égalité"], "type": "autre", "sensible": true}, "invisible": {"sentiments": ["triste"], "besoins": ["Présence", "Attention", "Inclusion"], "type": "autre", "sensible": false}, "isolée": {"sentiments": ["triste"], "besoins": ["Connexion", "Appartenance", "Contact"], "type": "autre", "sensible": false}, "jugée": {"sentiments": ["peur", "triste"], "besoins": ["Acceptation", "Bienveillance", "Compréhension"], "type": "autre", "sensible": false}, "larguée": {"sentiments": ["triste", "surprise"], "besoins": ["Connexion", "Sécurité", "Appartenance"], "type": "autre", "sensible": false}, "manipulée": {"sentiments": ["colere", "confuse"], "besoins": ["Choix", "Confiance", "Honnêteté", "Respect"], "type": "autre", "sensible": false}, "maternée": {"sentiments": ["colere"], "besoins": ["Liberté", "Confiance", "Respect de ses limites"], "type": "autre", "sensible": false}, "minable": {"sentiments": ["triste"], "besoins": ["Estime de soi", "Acceptation", "Sens de sa valeur"], "type": "soi", "sensible": false}, "menacée": {"sentiments": ["peur"], "besoins": ["Sécurité", "Protection"], "type": "autre", "sensible": true}, "méprisée": {"sentiments": ["triste", "colere"], "besoins": ["Respect", "Dignité", "Égalité"], "type": "autre", "sensible": false}, "mise sous pression": {"sentiments": ["peur", "fatiguee"], "besoins": ["Respect de son rythme", "Espace", "Choix", "Liberté"], "type": "autre", "sensible": false}, "négligée": {"sentiments": ["triste"], "besoins": ["Considération", "Attention", "Soins"], "type": "autre", "sensible": false}, "obligée": {"sentiments": ["colere", "fatiguee"], "besoins": ["Choix", "Liberté"], "type": "autre", "sensible": false}, "pas aimée": {"sentiments": ["triste"], "besoins": ["Amour", "Affection", "Appartenance"], "type": "autre", "sensible": false}, "pas comprise": {"sentiments": ["triste", "confuse"], "besoins": ["Compréhension", "Écoute", "Empathie"], "type": "autre", "sensible": false}, "pas considérée": {"sentiments": ["triste", "colere"], "besoins": ["Considération", "Respect", "Attention"], "type": "autre", "sensible": false}, "pas écoutée": {"sentiments": ["triste", "colere"], "besoins": ["Écoute", "Attention", "Présence"], "type": "autre", "sensible": false}, "pas entendue": {"sentiments": ["triste", "colere"], "besoins": ["Écoute", "Compréhension", "Empathie"], "type": "autre", "sensible": false}, "pas respectée": {"sentiments": ["colere", "triste"], "besoins": ["Respect", "Dignité", "Égalité"], "type": "autre", "sensible": false}, "pas utile": {"sentiments": ["triste"], "besoins": ["Reconnaissance", "Contribution", "Sens"], "type": "soi", "sensible": false}, "pas vue": {"sentiments": ["triste"], "besoins": ["Présence", "Attention", "Inclusion"], "type": "autre", "sensible": false}, "rabaissée": {"sentiments": ["triste", "colere"], "besoins": ["Respect", "Dignité", "Égalité"], "type": "autre", "sensible": false}, "rejetée": {"sentiments": ["triste", "peur"], "besoins": ["Appartenance", "Acceptation", "Inclusion", "Amour"], "type": "autre", "sensible": false}, "ridiculisée": {"sentiments": ["triste", "colere"], "besoins": ["Respect", "Dignité", "Acceptation"], "type": "autre", "sensible": false}, "stupide": {"sentiments": ["triste", "confuse"], "besoins": ["Acceptation", "Apprentissage", "Bienveillance"], "type": "soi", "sensible": false}, "trahie": {"sentiments": ["colere", "triste"], "besoins": ["Confiance", "Fiabilité", "Loyauté", "Sécurité"], "type": "autre", "sensible": false}, "utilisée": {"sentiments": ["colere", "triste"], "besoins": ["Réciprocité", "Mutualité", "Respect"], "type": "autre", "sensible": false}, "valorisée": {"sentiments": ["joie", "tranquillite"], "besoins": ["Reconnaissance", "Sens de sa valeur", "Contribution"], "type": "comble", "sensible": false}};    // { "ignorée": {sentiments:[...], besoins:[...], type:"autre", sensible:false}, ... }
+
+/* ---------- index ---------- */
+const FAM_SAT   = DATA.sentiments.besoins_satisfaits.map(f=>({...f, valence:"sat"}));
+const FAM_INSAT = DATA.sentiments.besoins_insatisfaits.map(f=>({...f, valence:"insat"}));
+const FAMILIES  = [...FAM_SAT, ...FAM_INSAT];
+const BESOINS   = DATA.besoins;
+const FAUX_MOTS = DATA.faux_sentiments.mots;
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/·/g,"");
+const wordIndex = {};
+FAMILIES.forEach(f=>f.mots.forEach(m=>{ (wordIndex[m]=wordIndex[m]||[]).push({label:f.label,valence:f.valence,id:f.id}); }));
+// index de recherche : toute forme (f/m/n) -> mot canonique feminin
+const SEARCHIDX = {};
+const addSearch=(canon)=>{ [canon, GENRE[canon]&&GENRE[canon].m, GENRE[canon]&&GENRE[canon].n].forEach(v=>{ if(v) SEARCHIDX[norm(v)]=canon; }); };
+Object.keys(wordIndex).forEach(addSearch);
+FAUX_MOTS.forEach(addSearch);
+// besoin -> categorie
+const NEED2CAT = {}; BESOINS.forEach(b=>b.mots.forEach(m=>NEED2CAT[m]=b.id));
+
+const VAL = {
+  sat:{cls:"v-sat",label:"Besoin comblé",dot:""},
+  insat:{cls:"v-insat",label:"Besoin non comblé",dot:"ring"},
+  besoin:{cls:"v-besoin",label:"Besoin",dot:""},
+  faux:{cls:"v-faux",label:"À traduire",dot:"ring"}
+};
+const el=(h)=>{const t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstElementChild;};
+const esc=s=>(""+s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- accord grammatical ---------- */
+let genre="n";
+function disp(canon){ if(genre==="f") return canon; const g=GENRE[canon]; return g&&g[genre]?g[genre]:canon; }
+function setGenre(g){
+  genre=g;
+  document.querySelectorAll(".seg button").forEach((b,i)=>b.setAttribute("aria-pressed", ["f","m","n"][i]===g));
+  document.getElementById("genreHint").textContent =
+    g==="f"?"la source Dialogo est au féminin":g==="m"?"formes masculines dérivées":"écriture inclusive (point médian)";
+  refresh();
+}
+
+/* ---------- navigation ---------- */
+function setMode(m){
+  ["explorer","associer","situer","demeler"].forEach(x=>{
+    document.getElementById("tab-"+x).setAttribute("aria-selected", x===m);
+    document.getElementById("p-"+x).classList.toggle("active", x===m);
+  });
+  if(m==="associer"){ if(assocKind==="besoins"){ if(!needState.word) needRound(); } else if(!gameState.word) nextRound(); }
+  if(m==="situer" && !situer.started) situerStart();
+  if(m==="demeler" && !demeler.word) demNext();
+}
+function speak(canon){
+  if(!("speechSynthesis" in window)) return;
+  const u=new SpeechSynthesisUtterance(disp(canon).replace(/·\S*/g,""));
+  u.lang="fr-CA"; u.rate=.92; speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+
+/* =======================================================
+   EXPLORER
+======================================================= */
+let filter="all";
+let exState={view:"home"};   // home | family | word | faux
+function setFilter(v){
+  filter=v; document.querySelectorAll("#vfilters .pill").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));
+  document.getElementById("q").value=""; document.getElementById("searchResults").innerHTML="";
+  exState={view:"home"}; renderFamilies();
+}
+function renderFamilies(){
+  const host=document.getElementById("families"); host.innerHTML="";
+  const show=(fam,valence)=>{const v=VAL[valence];
+    host.appendChild(el(`<button class="fam ${v.cls}" onclick="openFamily('${valence}','${fam.id}')">
+      <span class="tag ${v.cls}"><span class="dot ${v.dot}"></span>${v.label}</span>
+      <h3>${esc(fam.label)}</h3><div class="count">${fam.mots.length} nuances</div></button>`));};
+  const head=(t,s)=>host.appendChild(el(`<div class="famhead"><h2>${esc(t)}</h2><p>${esc(s)}</p></div>`));
+  if(filter==="faux"){ openFauxList(); return; }
+  if(filter==="all") head("Sentiments","Ce que je ressens — le signal.");
+  if(filter==="all"||filter==="sat") FAM_SAT.forEach(f=>show(f,"sat"));
+  if(filter==="all"||filter==="insat") FAM_INSAT.forEach(f=>show(f,"insat"));
+  if(filter==="all") head("Besoins","Ce qui est en jeu dessous — le levier.");
+  if(filter==="all"||filter==="besoin") BESOINS.forEach(b=>show(b,"besoin"));
+}
+function openFauxList(){
+  const host=document.getElementById("families"); host.innerHTML="";
+  const card=el(`<div class="card v-faux" style="padding:18px;grid-column:1/-1">
+    <span class="tag v-faux"><span class="dot ring"></span>À traduire</span>
+    <h3 style="font-family:Fraunces,serif;font-weight:500;font-size:1.3rem;margin:.3em 0 .2em">Les faux-sentiments</h3>
+    <p class="muted small" style="margin:.2em 0 .2em">${esc(DATA.faux_sentiments.note)}</p>
+    <p class="small" style="margin:.5em 0 .2em">Par exemple, «&nbsp;je me sens <em>ignoré</em>&nbsp;» parle surtout de l'autre&nbsp;; en CNV on dira plutôt «&nbsp;je me sens <em>triste</em>&nbsp;», «&nbsp;<em>frustré</em>&nbsp;» ou «&nbsp;<em>inquiet</em>&nbsp;».</p>
+    <p class="small" style="margin:.6em 0 .4em">Touche un mot pour le <strong>traduire</strong> en vrai sentiment + besoin.</p>
+    <div class="words" id="fauxWords"></div></div>`);
+  host.appendChild(card);
+  const fw=card.querySelector("#fauxWords");
+  FAUX_MOTS.forEach(m=>fw.appendChild(el(`<button class="word v-faux" onclick="openFaux('${esc(m)}')">${esc(disp(m))}</button>`)));
+}
+function onSearch(q){
+  const res=document.getElementById("searchResults");
+  if(!q.trim()){res.innerHTML="";exState={view:"home"};renderFamilies();return;}
+  document.getElementById("families").innerHTML="";
+  const nq=norm(q);
+  const seenSent=new Set(), sentHits=[], besoinHits=[], fauxHits=[];
+  Object.keys(SEARCHIDX).forEach(form=>{
+    if(!form.includes(nq)) return;
+    const canon=SEARCHIDX[form];
+    if(wordIndex[canon] && !seenSent.has(canon)){ seenSent.add(canon); sentHits.push(canon); }
+    else if(FAUX[canon] && !fauxHits.includes(canon)) fauxHits.push(canon);
+  });
+  BESOINS.forEach(b=>b.mots.forEach(m=>{ if(norm(m).includes(nq)) besoinHits.push(m); }));
+  if(!sentHits.length && !besoinHits.length && !fauxHits.length){
+    res.innerHTML=`<p class="muted" style="margin-top:18px">Aucun mot trouvé pour « ${esc(q)} ».</p>`;return;
+  }
+  const box=el(`<div class="words" style="margin-top:18px"></div>`); res.innerHTML="";
+  sentHits.slice(0,40).forEach(m=>{const v=VAL[wordIndex[m][0].valence];const multi=wordIndex[m].length>1?" multi":"";
+    box.appendChild(el(`<button class="word ${v.cls}${multi}" onclick="openWord('${esc(m)}')">${esc(disp(m))}</button>`));});
+  besoinHits.slice(0,20).forEach(m=>box.appendChild(el(`<button class="word v-besoin" onclick="speak('${esc(m)}')">${esc(m)}</button>`)));
+  fauxHits.slice(0,20).forEach(m=>box.appendChild(el(`<button class="word v-faux" onclick="openFaux('${esc(m)}')">${esc(disp(m))}</button>`)));
+  res.appendChild(box);
+}
+function backHome(){
+  document.getElementById("explorer-detail").style.display="none";
+  document.getElementById("explorer-home").style.display="block";
+  exState={view:"home"}; if(filter==="faux") openFauxList(); else renderFamilies();
+}
+function openFamily(valence,id){
+  exState={view:"family",valence,id};
+  const fam=(valence==="besoin"?BESOINS:FAMILIES).find(f=>f.id===id); const v=VAL[valence];
+  const home=document.getElementById("explorer-home"),det=document.getElementById("explorer-detail");
+  home.style.display="none";det.style.display="block";det.innerHTML="";
+  det.appendChild(el(`<button class="backlink" onclick="backHome()">← Toutes les familles</button>`));
+  det.appendChild(el(`<div class="${v.cls}" style="margin-top:6px"><span class="tag ${v.cls}"><span class="dot ${v.dot}"></span>${v.label}</span>
+    <h2 class="detail" style="margin:.25em 0 .1em">${esc(fam.label)}</h2></div>`));
+  if(DEFS[id]) det.appendChild(el(`<p class="famdef">${esc(DEFS[id])}</p>`));
+  const words=el(`<div class="words ${v.cls}"></div>`);
+  fam.mots.forEach(m=>{
+    if(valence==="besoin") words.appendChild(el(`<button class="word v-besoin" onclick="openNeed('${esc(m)}','${id}')">${esc(m)}</button>`));
+    else { const multi=(wordIndex[m]&&wordIndex[m].length>1)?" multi":""; words.appendChild(el(`<button class="word ${v.cls}${multi}" onclick="openWord('${esc(m)}')">${esc(disp(m))}</button>`)); }
+  });
+  det.appendChild(words);
+  if(valence!=="besoin") det.appendChild(el(`<p class="small muted" style="margin-top:14px">✦ = mot présent dans d'autres familles. Touche-le pour voir lesquelles.</p>`));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function openWord(word){
+  exState={view:"word",word};
+  const home=document.getElementById("explorer-home"),det=document.getElementById("explorer-detail");
+  home.style.display="none";det.style.display="block";det.innerHTML="";
+  det.appendChild(el(`<button class="backlink" onclick="backHome()">← Retour</button>`));
+  const fams=wordIndex[word]||[]; const primary=VAL[fams[0]?fams[0].valence:"sat"];
+  det.appendChild(el(`<div class="${primary.cls} detail"><h2><span>${esc(disp(word))}</span>
+    <button class="speak" onclick="speak('${esc(word)}')" aria-label="Écouter le mot">🔊</button></h2></div>`));
+  det.appendChild(el(`<p class="muted" style="margin:0 0 12px">Ce mot pointe vers&nbsp;:</p>`));
+  const list=el(`<div class="belongs"></div>`);
+  fams.forEach(f=>{const v=VAL[f.valence];
+    list.appendChild(el(`<button class="b ${v.cls}" onclick="openFamily('${f.valence}','${f.id}')">
+      <span class="dot ${v.dot}"></span><strong>${esc(f.label)}</strong>
+      <span class="small muted" style="margin-left:auto">${v.label} →</span></button>`));});
+  det.appendChild(list);
+  if(fams[0] && DEFS[fams[0].id]) det.appendChild(el(`<p class="famdef" style="margin-top:14px"><strong>${esc(fams[0].label)}</strong> — ${esc(DEFS[fams[0].id])}</p>`));
+  if(fams.length>1){
+    const valset=new Set(fams.map(f=>f.valence));
+    const msg = valset.size>1
+      ? `<strong>Le même mot, deux mondes.</strong> Selon le contexte, « ${esc(disp(word))} » peut signaler un besoin comblé <em>ou</em> non comblé. C'est le ton, le corps et la situation qui tranchent — pas le mot seul.`
+      : `« ${esc(disp(word))} » se glisse dans ${fams.length} familles voisines. Affiner, c'est choisir celle qui colle le mieux à <em>ce</em> moment précis.`;
+    det.appendChild(el(`<div class="insight">${msg}</div>`));
+  }
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+const FAMLBL = id => (FAMILIES.find(f=>f.id===id)||{}).label || id;
+function openFaux(word){
+  exState={view:"faux",word};
+  const home=document.getElementById("explorer-home"),det=document.getElementById("explorer-detail");
+  home.style.display="none";det.style.display="block";det.innerHTML="";
+  det.appendChild(el(`<button class="backlink" onclick="backHomeFaux()">← Les faux-sentiments</button>`));
+  const t=FAUX[word];
+  det.appendChild(el(`<div class="v-faux detail"><h2><span>${esc(disp(word))}</span>
+    <button class="speak" onclick="speak('${esc(word)}')" aria-label="Écouter">🔊</button></h2>
+    <span class="tag v-faux"><span class="dot ring"></span>${t.type==="comble"?"Évaluation positive":t.type==="soi"?"Jugement sur soi":"Jugement / interprétation"}</span></div>`));
+  // explication selon le type
+  const expl = t.type==="comble"
+    ? `Ce mot évalue une valeur plutôt qu'il ne nomme une émotion. Derrière, un besoin semble <strong>nourri</strong>.`
+    : t.type==="soi"
+    ? `Ce mot est un <strong>jugement sur soi</strong>, pas un sentiment. Dessous, il y a une vraie émotion et un besoin — y compris envers soi-même.`
+    : `Ce mot décrit surtout ce que l'<strong>autre fait</strong>, pas ce que tu ressens. Dessous, il y a un vrai sentiment et un besoin non comblé.`;
+  det.appendChild(el(`<p style="margin:14px 0 6px">${expl}</p>`));
+  // sentiments (familles cliquables)
+  det.appendChild(el(`<p class="small muted" style="margin:14px 0 2px">Vrai sentiment, du côté de&nbsp;:</p>`));
+  const sc=el(`<div class="chips"></div>`);
+  t.sentiments.forEach(id=>{const f=FAMILIES.find(x=>x.id===id);const v=VAL[f.valence];
+    sc.appendChild(el(`<button class="chip ${v.cls}" onclick="openFamily('${f.valence}','${id}')">${esc(f.label)}</button>`));});
+  det.appendChild(sc);
+  // besoins (cliquables -> categorie)
+  det.appendChild(el(`<p class="small muted" style="margin:16px 0 2px">${t.type==="comble"?"Besoin nourri&nbsp;:":"Besoin non comblé&nbsp;:"}</p>`));
+  const bc=el(`<div class="chips v-besoin"></div>`);
+  t.besoins.forEach(b=>{const cat=NEED2CAT[b];
+    bc.appendChild(el(`<button class="chip v-besoin" onclick="${cat?`openFamily('besoin','${cat}')`:''}">${esc(b)}</button>`));});
+  det.appendChild(bc);
+  // phrase-modele CNV
+  const b0=t.besoins[0];
+  const tmpl = t.type==="comble"
+    ? `«&nbsp;Je me sens <strong>${esc(disp(sampleWord(t.sentiments[0])))}</strong>&nbsp;: mon besoin de <strong>${esc(b0.toLowerCase())}</strong> est nourri.&nbsp;»`
+    : `«&nbsp;Quand cela arrive, je me sens <strong>${esc(disp(sampleWord(t.sentiments[0])))}</strong> parce que j'ai besoin de <strong>${esc(b0.toLowerCase())}</strong>.&nbsp;»`;
+  det.appendChild(el(`<div class="tmpl"><div class="small muted" style="margin-bottom:4px">Une phrase pour revenir à soi&nbsp;:</div><em>${tmpl}</em></div>`));
+  if(t.sensible) det.appendChild(el(`<div class="warn">Si ce mot renvoie à une situation réelle qui te met en danger ou te fait du mal, cet outil ne suffit pas&nbsp;: parles-en à une personne de confiance ou à une ressource d'aide.</div>`));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function backHomeFaux(){
+  document.getElementById("explorer-detail").style.display="none";
+  document.getElementById("explorer-home").style.display="block";
+  setFilter("faux");
+}
+// un mot representatif d'une famille pour la phrase-modele (1er mot mono-famille, sinon 1er)
+function sampleWord(famId){
+  const f=FAMILIES.find(x=>x.id===famId); if(!f) return famId;
+  const mono=f.mots.find(m=>wordIndex[m].length===1); return mono||f.mots[0];
+}
+
+/* =======================================================
+   ASSOCIER
+======================================================= */
+let gameState={word:null,valid:[],right:0,total:0,answered:false,opts:[],timer:null};
+function nextRound(){
+  clearTimeout(gameState.timer);
+  const keys=Object.keys(wordIndex); const word=keys[Math.floor(Math.random()*keys.length)];
+  const valid=wordIndex[word].map(f=>f.id);
+  const opts=new Set(valid); const pool=FAMILIES.map(f=>f.id).filter(id=>!opts.has(id));
+  while(opts.size<4 && pool.length) opts.add(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
+  gameState={word,valid,right:gameState.right,total:gameState.total,answered:false,opts:[...opts].sort(()=>Math.random()-.5),timer:null};
+  renderGame();
+}
+function renderGame(){
+  document.getElementById("gameWord").textContent=disp(gameState.word);
+  document.getElementById("gameFeedback").innerHTML="";document.getElementById("gameNext").innerHTML="";
+  const host=document.getElementById("gameOpts");host.innerHTML="";
+  gameState.opts.forEach(id=>host.appendChild(el(`<button class="opt" data-id="${id}" onclick="answer('${id}')">${esc(FAMLBL(id))}</button>`)));
+  updateScore();
+}
+function answer(id){
+  if(gameState.answered) return; gameState.answered=true; gameState.total++;
+  const ok=gameState.valid.includes(id); if(ok){ gameState.right++; markLearned("sent", gameState.word); }
+  const fams=wordIndex[gameState.word];
+  document.querySelectorAll("#gameOpts .opt").forEach(b=>{
+    b.disabled=true; const bid=b.dataset.id;
+    if(ok){ if(bid===id) b.classList.add("good"); else b.classList.add("dim"); }
+    else { if(gameState.valid.includes(bid)) b.classList.add("good");
+           else if(bid===id) b.classList.add("bad"); else b.classList.add("dim"); }
+  });
+  const fb=document.getElementById("gameFeedback");
+  if(ok){
+    if(fams.length>1){
+      const others=fams.filter(f=>f.id!==id).map(f=>f.label).join(" · ");
+      const cross=new Set(fams.map(f=>f.valence)).size>1;
+      fb.innerHTML=`<div class="insight">Juste&nbsp;! «&nbsp;${esc(disp(gameState.word))}&nbsp;» vit aussi dans&nbsp;: <strong>${esc(others)}</strong>.${cross?" Selon le contexte, besoin comblé <em>ou</em> non comblé — une seule bonne réponse suffit.":" Une seule bonne réponse suffit."}</div>`;
+    } else fb.innerHTML=`<p class="small muted" style="margin:0">Juste&nbsp;!</p>`;
+    // bonne reponse : on affiche « Juste ! » et on enchaine tout seul,
+    // sans bouton (retour de Tommy : « Suivant maintenant » apparaissait sans raison)
+    const delai = fams.length>1 ? 2300 : 1100;
+    gameState.timer=setTimeout(nextRound, delai);
+  } else {
+    const valids=fams.map(f=>f.label).join(" · ");
+    fb.innerHTML=`<div class="insight" style="background:var(--insat-bg);color:var(--insat-ink);border-color:color-mix(in srgb,var(--insat) 30%,transparent)">«&nbsp;${esc(disp(gameState.word))}&nbsp;» se relie plutôt à&nbsp;: <strong>${esc(valids)}</strong>.</div>`;
+    document.getElementById("gameNext").innerHTML=`<button class="pill" aria-pressed="true" onclick="nextRound()" style="width:100%;padding:14px">Continuer →</button>`;
+  }
+  updateScore();
+}
+function updateScore(){document.getElementById("score").textContent=`${gameState.right} / ${gameState.total}`;}
+
+/* =======================================================
+   VRAI OU FAUX SENTIMENT
+======================================================= */
+let demeler={word:null,isFaux:false,right:0,total:0,answered:false,timer:null};
+function demNext(){
+  clearTimeout(demeler.timer);
+  const useFaux = FAUX_MOTS.length && Math.random()<0.5;
+  let word;
+  if(useFaux){ word=FAUX_MOTS[Math.floor(Math.random()*FAUX_MOTS.length)]; }
+  else { const keys=Object.keys(wordIndex); word=keys[Math.floor(Math.random()*keys.length)]; }
+  demeler={word,isFaux:useFaux,right:demeler.right,total:demeler.total,answered:false,timer:null};
+  demRender();
+}
+function demRender(){
+  document.getElementById("dWord").textContent=disp(demeler.word);
+  document.getElementById("dFeedback").innerHTML="";document.getElementById("dNext").innerHTML="";
+  const host=document.getElementById("dOpts");host.innerHTML="";
+  host.appendChild(el(`<button class="opt" data-v="vrai" onclick="demAnswer('vrai')">Vrai sentiment</button>`));
+  host.appendChild(el(`<button class="opt" data-v="faux" onclick="demAnswer('faux')">Faux sentiment</button>`));
+  demScore();
+}
+function demTrad(){
+  const t=FAUX[demeler.word]; if(!t) return "";
+  const sents=t.sentiments.map(id=>FAMLBL(id)).join(" · ");
+  const bes=t.besoins.slice(0,3).join(" · ");
+  return `<div class="insight" style="margin-top:8px">«&nbsp;${esc(disp(demeler.word))}&nbsp;» cache souvent un vrai sentiment (<strong>${esc(sents)}</strong>) et un besoin (<strong>${esc(bes)}</strong>).</div>`;
+}
+function demAnswer(choice){
+  if(demeler.answered) return; demeler.answered=true; demeler.total++;
+  const correct = demeler.isFaux ? "faux" : "vrai";
+  const ok = choice===correct; if(ok){ demeler.right++; if(!demeler.isFaux) markLearned("sent", demeler.word); }
+  document.querySelectorAll("#dOpts .opt").forEach(b=>{
+    b.disabled=true; const bv=b.dataset.v;
+    if(bv===correct) b.classList.add("good"); else if(bv===choice) b.classList.add("bad"); else b.classList.add("dim");
+  });
+  const fb=document.getElementById("dFeedback");
+  const trad = demeler.isFaux ? demTrad() : "";
+  if(ok){
+    fb.innerHTML=`<p class="small muted" style="margin:0">Juste&nbsp;!</p>`+trad;
+    if(demeler.isFaux){
+      // une description a lire : bouton « Suivant », pas d'auto-avance (retour de Tommy)
+      document.getElementById("dNext").innerHTML=`<button class="pill" aria-pressed="true" onclick="demNext()" style="width:100%;padding:14px">Suivant →</button>`;
+    } else {
+      demeler.timer=setTimeout(demNext, 1100);
+    }
+  } else {
+    const phrase = demeler.isFaux
+      ? `En fait, «&nbsp;${esc(disp(demeler.word))}&nbsp;» est un <strong>faux sentiment</strong>&nbsp;: il décrit surtout ce que l'autre fait.`
+      : `En fait, «&nbsp;${esc(disp(demeler.word))}&nbsp;» est un <strong>vrai sentiment</strong>.`;
+    fb.innerHTML=`<div class="insight" style="background:var(--insat-bg);color:var(--insat-ink);border-color:color-mix(in srgb,var(--insat) 30%,transparent)">${phrase}</div>`+trad;
+    document.getElementById("dNext").innerHTML=`<button class="pill" aria-pressed="true" onclick="demNext()" style="width:100%;padding:14px">Continuer →</button>`;
+  }
+  demScore();
+}
+function demScore(){document.getElementById("dScore").textContent=`${demeler.right} / ${demeler.total}`;}
+
+/* =======================================================
+   ME SITUER
+======================================================= */
+let situer={started:false,step:0,valence:null,family:null,picks:[]};
+function situerStart(){situer={started:true,step:0,valence:null,family:null,picks:[]};situerRender();}
+function situerProg(n){document.querySelectorAll("#situerProgress span").forEach((s,i)=>s.classList.toggle("on",i<=n));}
+function situerRender(){
+  const body=document.getElementById("situerBody");situerProg(Math.min(situer.step,2));body.innerHTML="";
+  if(situer.step===0){
+    body.appendChild(el(`<div class="step"><h2>Comment ça va, à l'intérieur&nbsp;?</h2>
+      <p class="muted small" style="margin:-.3em 0 .6em">Pas besoin de le savoir précisément. On y va doucement.</p>
+      <div class="choices">
+        <button class="choice v-sat" onclick="situerValence('sat')"><span class="dot"></span><span>Plutôt nourri·e, mes besoins semblent comblés<span class="sub">légèreté, ouverture, énergie agréable…</span></span></button>
+        <button class="choice v-insat" onclick="situerValence('insat')"><span class="dot ring"></span><span>Plutôt en tension, un besoin semble non comblé<span class="sub">lourdeur, inconfort, agitation…</span></span></button>
+      </div></div>`));
+  } else if(situer.step===1){
+    const fams=situer.valence==="sat"?FAM_SAT:FAM_INSAT;const v=VAL[situer.valence];
+    const box=el(`<div class="step"><button class="backlink" onclick="situer.step=0;situerRender()">← Retour</button>
+      <h2>Quelle famille est la plus proche&nbsp;?</h2><div class="choices"></div></div>`);
+    const ch=box.querySelector(".choices");
+    fams.forEach(f=>ch.appendChild(el(`<button class="choice ${v.cls}" onclick="situerFamily('${f.id}')"><span class="dot ${v.dot}"></span>${esc(f.label)}</button>`)));
+    body.appendChild(box);
+  } else if(situer.step===2){
+    const fam=FAMILIES.find(f=>f.id===situer.family);const v=VAL[situer.valence];
+    const box=el(`<div class="step"><button class="backlink" onclick="situer.step=1;situerRender()">← Retour</button>
+      <h2>Le mot juste&nbsp;?</h2><p class="muted small" style="margin:-.3em 0 .4em">Touche celui (ou ceux) qui résonnent.</p>
+      <div class="words ${v.cls}" id="situerWords"></div>
+      <button class="pill" style="margin-top:16px;width:100%;padding:14px" aria-pressed="true" onclick="situer.step=3;situerRender()">Voir ce que ça révèle →</button></div>`);
+    const w=box.querySelector("#situerWords");
+    fam.mots.forEach(m=>{const b=el(`<button class="word ${v.cls}" onclick="situerPick(this,'${esc(m)}')">${esc(disp(m))}</button>`);
+      if(situer.picks.includes(m)){b.style.background="var(--cb)";b.style.borderColor="var(--c)";b.setAttribute("aria-pressed","true");}
+      w.appendChild(b);});
+    body.appendChild(box);
+  } else { situerReflect(); }
+}
+function situerValence(v){situer.valence=v;situer.step=1;situerRender();}
+function situerFamily(id){situer.family=id;situer.picks=[];situer.step=2;situerRender();}
+function situerPick(btn,m){const i=situer.picks.indexOf(m);
+  if(i>=0){situer.picks.splice(i,1);btn.style.background="";btn.style.borderColor="";btn.removeAttribute("aria-pressed");}
+  else{situer.picks.push(m);btn.style.background="var(--cb)";btn.style.borderColor="var(--c)";btn.setAttribute("aria-pressed","true");}}
+function situerReflect(){
+  const body=document.getElementById("situerBody");situerProg(2);
+  const fam=FAMILIES.find(f=>f.id===situer.family);const v=VAL[situer.valence];
+  const picks=situer.picks.length?situer.picks:[fam.mots[0]];
+  const suggSat=["celebration","relationnel"],suggInsat=["relationnel","survie","integrite"];
+  const sugg=(situer.valence==="sat"?suggSat:suggInsat).map(id=>BESOINS.find(b=>b.id===id));
+  const box=el(`<div class="reflect">
+    <span class="tag ${v.cls}"><span class="dot ${v.dot}"></span>${v.label} · ${esc(fam.label)}</span>
+    <h2 style="font-family:Fraunces,serif;font-weight:500;font-size:1.5rem;margin:.3em 0 .2em">Ce que ces mots murmurent</h2>
+    <div class="picked">${picks.map(p=>`<span class="word ${v.cls}" style="cursor:default">${esc(disp(p))}</span>`).join("")}</div>
+    <p class="muted small">${situer.valence==="sat"
+      ?"Un besoin semble nourri. Le nommer aide à savourer — et à savoir ce qui te fait du bien pour y revenir."
+      :"Un sentiment de tension pointe presque toujours vers un besoin non comblé. Parmi ceux-ci, lequel demande de l'attention&nbsp;?"}</p>
+    <div class="chips v-besoin" id="needSugg"></div>
+    <div class="tmpl" style="margin-top:18px"><em>«&nbsp;Je me sens <strong>${esc(disp(picks[0]))}</strong> parce que j'ai ${situer.valence==="sat"?"savouré":"besoin de"}…&nbsp;»</em></div>
+    <button class="pill" style="margin-top:16px" onclick="situerStart()">Recommencer</button></div>`);
+  body.innerHTML="";body.appendChild(box);
+  const ns=box.querySelector("#needSugg");
+  sugg.forEach(b=>b.mots.slice(0,6).forEach(m=>ns.appendChild(el(`<span class="chip v-besoin" style="cursor:default">${esc(m)}</span>`))));
+}
+
+/* =======================================================
+   DEFINITIONS PAR FAMILLE (le lien sentiment -> besoin)
+======================================================= */
+const DEFS = {
+  joie:"Le plaisir d'un besoin nourri, ici et maintenant — le signe que quelque chose d'important pour toi est satisfait.",
+  vitalite:"L'énergie qui déborde quand le corps et l'élan suivent. Un besoin de mouvement, de stimulation, de vie, comblé.",
+  engage:"L'attention vive tournée vers ce qui compte. Un besoin de sens, de découverte ou de contribution, nourri.",
+  tranquillite:"Le calme, quand un besoin de paix, de repos ou de sécurité est comblé. L'agitation retombe.",
+  affection:"La chaleur du lien. Un besoin de proximité, de tendresse ou de connexion, nourri.",
+  gratitude:"La reconnaissance de ce qui t'est donné. Un besoin de sens et de lien à plus grand que soi, comblé.",
+  emerveillement:"Le saisissement devant le beau ou le vaste. Un besoin de beauté, d'inspiration, de transcendance, nourri.",
+  confiance:"L'assurance tranquille, en soi ou en l'avenir. Un besoin de sécurité intérieure, de capacité, d'espoir, comblé.",
+  triste:"La trace d'un manque ou d'une perte. Un besoin de soutien, de lien ou de sens qui demande de l'attention.",
+  peur:"L'alerte devant une menace ressentie. Un besoin de sécurité ou de protection à nourrir.",
+  colere:"L'énergie qui monte quand une limite est franchie. Un besoin de respect, d'équité ou d'écoute, non comblé.",
+  confuse:"Le brouillard, quand on ne sait plus. Un besoin de clarté, de repère ou de sens à retrouver.",
+  deconnectee:"La mise à distance, quand on se coupe pour se protéger. Souvent un besoin de sécurité ou de repos, en sourdine.",
+  degoutee:"Le rejet de ce qui heurte ton corps ou tes valeurs. Un besoin d'intégrité, de respect, de propreté, à préserver.",
+  fatiguee:"L'épuisement, quand les réserves sont à sec. Un besoin de repos, de répit, de soutien, qui presse.",
+  surprise:"La secousse de l'inattendu. Ni agréable ni pénible encore — le signe qu'un repère vient de bouger.",
+  survie:"Ce dont le corps a besoin pour tenir : air, eau, repos, sécurité, chaleur, mouvement.",
+  relationnel:"Ce qui se joue avec les autres : lien, écoute, respect, appartenance, soutien.",
+  integrite:"Être en accord avec soi : authenticité, dignité, estime, respect de ses limites.",
+  expression:"Déployer ce qu'on porte en soi : créer, comprendre, agir, grandir.",
+  autonomie:"Disposer de soi : choisir, apprendre, s'affirmer, avoir son espace.",
+  celebration:"Goûter et honorer la vie : beauté, jeu, gratitude, sens, paix."
+};
+
+/* =======================================================
+   JEU « ASSOCIER » : bascule Sentiments / Besoins
+======================================================= */
+const needCats = {};
+BESOINS.forEach(c => c.mots.forEach(m => { (needCats[m] = needCats[m] || []).push(c.id); }));
+const NEED_WORDS = Object.keys(needCats);
+function catLabel(id){ const c=BESOINS.find(b=>b.id===id); return c?c.label:id; }
+
+let assocKind = "sentiments";
+let needState = {word:null,correct:[],opts:[],right:0,total:0,answered:false,timer:null};
+function setAssoc(k){
+  assocKind = k;
+  document.querySelectorAll(".assoc-seg button").forEach((b,i)=>b.setAttribute("aria-pressed", ["sentiments","besoins"][i]===k));
+  const tag=document.getElementById("assocTag"), prompt=document.getElementById("assocPrompt"), disc=document.getElementById("assocDisc");
+  document.getElementById("gameFeedback").innerHTML=""; document.getElementById("gameNext").innerHTML="";
+  if(k==="sentiments"){
+    tag.className="tag v-sat"; tag.innerHTML='<span class="dot"></span>Relier un sentiment';
+    prompt.innerHTML="À quelle famille relier&nbsp;?";
+    disc.textContent="Chaque mot a sa famille principale — à toi de la retrouver.";
+    gameState={word:null,valid:[],right:gameState.right,total:gameState.total,answered:false,opts:[],timer:null};
+    nextRound();
+  } else {
+    tag.className="tag v-besoin"; tag.innerHTML='<span class="dot"></span>Relier un besoin';
+    prompt.innerHTML="À quelle famille de besoins&nbsp;?";
+    disc.textContent="Un besoin peut vivre dans plus d'une famille — toute famille juste est acceptée.";
+    needState={word:null,correct:[],opts:[],right:needState.right,total:needState.total,answered:false,timer:null};
+    needRound();
+  }
+}
+function needRound(){
+  clearTimeout(needState.timer);
+  const word = NEED_WORDS[Math.floor(Math.random()*NEED_WORDS.length)];
+  const correct = needCats[word];
+  const wrong = BESOINS.map(b=>b.id).filter(id=>!correct.includes(id));
+  for(let i=wrong.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[wrong[i],wrong[j]]=[wrong[j],wrong[i]];}
+  const opts=[correct[Math.floor(Math.random()*correct.length)], ...wrong.slice(0,3)];
+  for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]];}
+  needState={word,correct,opts,right:needState.right,total:needState.total,answered:false,timer:null};
+  needRender();
+}
+function needRender(){
+  document.getElementById("gameWord").textContent=needState.word;
+  document.getElementById("gameFeedback").innerHTML=""; document.getElementById("gameNext").innerHTML="";
+  const host=document.getElementById("gameOpts"); host.innerHTML="";
+  needState.opts.forEach(id=>host.appendChild(el(`<button class="opt" data-id="${id}" onclick="needAnswer('${id}')">${esc(catLabel(id))}</button>`)));
+  document.getElementById("score").textContent=`${needState.right} / ${needState.total}`;
+}
+function needAnswer(id){
+  if(needState.answered) return; needState.answered=true; needState.total++;
+  const ok = needState.correct.includes(id);
+  if(ok){ needState.right++; markLearned("need", needState.word); }
+  document.querySelectorAll("#gameOpts .opt").forEach(b=>{
+    b.disabled=true; const bid=b.dataset.id;
+    if(needState.correct.includes(bid)) b.classList.add("good");
+    else if(bid===id) b.classList.add("bad"); else b.classList.add("dim");
+  });
+  const main=needState.correct[0];
+  const def = DEFS[main] ? `<div class="insight" style="background:var(--besoin-bg);border-color:color-mix(in srgb,var(--besoin) 30%,transparent)"><strong>${esc(catLabel(main))}</strong> — ${esc(DEFS[main])}</div>` : "";
+  const fb=document.getElementById("gameFeedback");
+  if(ok){
+    fb.innerHTML=`<p class="small muted" style="margin:0 0 4px">Juste&nbsp;!</p>`+def;
+    needState.timer=setTimeout(needRound, 1500);
+  } else {
+    const noms=needState.correct.map(catLabel).join(" · ");
+    fb.innerHTML=`<div class="insight" style="background:var(--insat-bg);color:var(--insat-ink);border-color:color-mix(in srgb,var(--insat) 30%,transparent)">«&nbsp;${esc(needState.word)}&nbsp;» appartient à&nbsp;: <strong>${esc(noms)}</strong>.</div>`+def;
+    document.getElementById("gameNext").innerHTML=`<button class="pill" aria-pressed="true" onclick="needRound()" style="width:100%;padding:14px">Continuer →</button>`;
+  }
+  document.getElementById("score").textContent=`${needState.right} / ${needState.total}`;
+}
+
+/* =======================================================
+   FICHE D'UN BESOIN (depuis l'Explorer)
+======================================================= */
+function openNeed(name, catId){
+  exState={view:"need",word:name,cat:catId};
+  const home=document.getElementById("explorer-home"),det=document.getElementById("explorer-detail");
+  home.style.display="none";det.style.display="block";det.innerHTML="";
+  det.appendChild(el(`<button class="backlink" onclick="openFamily('besoin','${catId}')">← Retour</button>`));
+  det.appendChild(el(`<div class="v-besoin detail"><h2><span>${esc(name)}</span>
+    <button class="speak" onclick="speak('${esc(name)}')" aria-label="Écouter">🔊</button></h2>
+    <span class="tag v-besoin"><span class="dot"></span>Besoin</span></div>`));
+  const cats=(needCats[name]||[catId]);
+  det.appendChild(el(`<p style="margin:14px 0 6px">Famille&nbsp;: ${cats.map(id=>`<strong>${esc(catLabel(id))}</strong>`).join(", ")}.</p>`));
+  if(DEFS[catId]) det.appendChild(el(`<p class="famdef">${esc(DEFS[catId])}</p>`));
+  det.appendChild(el(`<div class="insight" style="background:var(--besoin-bg);border-color:color-mix(in srgb,var(--besoin) 30%,transparent)">Quand ce besoin est <strong>comblé</strong>, des sentiments agréables apparaissent&nbsp;; quand il <strong>manque</strong>, des sentiments en tension font signe. C'est ce qu'ils cherchent à te dire.</div>`));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* =======================================================
+   SUIVI DE PROGRESSION (local et privé)
+======================================================= */
+let PROG = {sent:{},need:{}};
+function loadProg(){ try{ const r=localStorage.getItem("ajm_prog"); if(r){ const p=JSON.parse(r); PROG={sent:p.sent||{},need:p.need||{}}; } }catch(e){} }
+function saveProg(){ try{ localStorage.setItem("ajm_prog", JSON.stringify(PROG)); }catch(e){} }
+function markLearned(kind, key){
+  const bag = kind==="need" ? PROG.need : PROG.sent;
+  if(!bag[key]){ bag[key]=1; saveProg(); renderProgress(); }
+}
+const SENT_TOTAL = Object.keys(wordIndex).length;
+const NEED_TOTAL = NEED_WORDS.length;
+function renderProgress(){
+  const host=document.getElementById("progressCard"); if(!host) return;
+  const s=Object.keys(PROG.sent).length, n=Object.keys(PROG.need).length;
+  if(s===0 && n===0){ host.innerHTML=""; return; }
+  const bar=(label,v,t)=>{const pct=t?Math.round(v/t*100):0;return `<div class="prog"><div class="prog-top"><span>${label}</span><span>${v} / ${t}</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div></div>`;};
+  host.innerHTML=`<div class="card progress-card"><div class="pc-title">Ton vocabulaire s'enrichit</div>${bar("Sentiments",s,SENT_TOTAL)}${bar("Besoins",n,NEED_TOTAL)}<p class="pc-note">Chaque mot relié juste s'ajoute ici. Rien n'est partagé — tout reste sur ton appareil.</p></div>`;
+}
+
+/* ---------- re-rendu apres changement d'accord ---------- */
+function refresh(){
+  // explorer
+  if(document.getElementById("explorer-detail").style.display!=="none"){
+    if(exState.view==="family") openFamily(exState.valence,exState.id);
+    else if(exState.view==="word") openWord(exState.word);
+    else if(exState.view==="faux") openFaux(exState.word);
+    else if(exState.view==="need") openNeed(exState.word, exState.cat);
+  } else {
+    const q=document.getElementById("q").value;
+    if(q.trim()) onSearch(q); else if(filter==="faux") openFauxList(); else renderFamilies();
+  }
+  // associer (re-affiche le mot courant sans changer la manche)
+  if(gameState.word){ document.getElementById("gameWord").textContent=disp(gameState.word);
+    if(gameState.answered) answerRedraw(); }
+  // situer
+  if(situer.started) situerRender();
+}
+function answerRedraw(){ /* le feedback reste; on rafraichit juste le libelle du mot deja fait */ }
+
+/* ---------- init ---------- */
+loadProg();
+renderFamilies();
+renderProgress();
+
+/* =======================================================
+   PWA : installation + service worker + etat reseau
+======================================================= */
+(function(){
+  const isStandalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+
+  // invite d'installation (Android/Chrome/Edge)
+  let deferred = null;
+  const bar = document.getElementById("installBar");
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault(); deferred = e;
+    if (!isStandalone) bar.hidden = false;
+  });
+  document.getElementById("installBtn").addEventListener("click", async () => {
+    if (!deferred) return;
+    deferred.prompt(); await deferred.userChoice; deferred = null; bar.hidden = true;
+  });
+  document.getElementById("installClose").addEventListener("click", () => bar.hidden = true);
+  window.addEventListener("appinstalled", () => bar.hidden = true);
+
+  // astuce iOS (pas de beforeinstallprompt sur Safari)
+  const ua = navigator.userAgent;
+  const isiOS = /iphone|ipad|ipod/i.test(ua);
+  const isSafari = /safari/i.test(ua) && !/(chrome|crios|fxios|android)/i.test(ua);
+  if (isiOS && isSafari && !isStandalone) document.getElementById("iosHint").hidden = false;
+  document.getElementById("iosClose").addEventListener("click", () => document.getElementById("iosHint").hidden = true);
+
+  // service worker
+  if ("serviceWorker" in navigator) {
+    let reloadOnControllerChange = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloadOnControllerChange) location.reload();   // seulement apres une mise a jour demandee
+    });
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").then((reg) => {
+        reg.addEventListener("updatefound", () => {
+          const sw = reg.installing;
+          if (!sw) return;
+          sw.addEventListener("statechange", () => {
+            // nouvelle version prete ET une version controle deja la page -> proposer
+            if (sw.state === "installed" && navigator.serviceWorker.controller) {
+              const ub = document.getElementById("updateBar");
+              ub.hidden = false;
+              document.getElementById("updateBtn").onclick = () => {
+                reloadOnControllerChange = true;
+                reg.waiting && reg.waiting.postMessage("skip-waiting");
+              };
+            }
+          });
+        });
+      }).catch(() => {}); // hors contexte securise (ex. apercu file://) : on ignore
+    });
+  }
+
+  // etat reseau
+  const net = () => document.body.classList.toggle("offline", !navigator.onLine);
+  addEventListener("online", net); addEventListener("offline", net); net();
+})();
+</script>
+</body>
+</html>

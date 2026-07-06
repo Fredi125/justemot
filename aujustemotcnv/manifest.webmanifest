@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "Au juste mot — La CNV appliquée",
+  "short_name": "Au juste mot",
+  "description": "Comprendre le langage émotionnel : relier chaque nuance à sa famille de sentiments et au besoin qu'elle révèle. Vocabulaire de Communication NonViolente.",
+  "lang": "fr-CA",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#F5EFE3",
+  "theme_color": "#F5EFE3",
+  "categories": ["education", "health", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
