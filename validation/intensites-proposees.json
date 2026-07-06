@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "statut": "PROPOSÉ — à valider par Tommy avant toute mise en production",
+    "version_proposition": "0.1",
+    "source_mots": "aujustemotcnv/index.html (objet DATA) — mots au féminin, déjà accordés dans GENRE",
+    "echelle": ["leger", "modere", "intense"],
+    "note_cnv": "Le classement en intensité est subjectif et n'est PAS sourcé par Dialogo (2022). Aucune de ces données ne doit être câblée dans l'application ni déployée sans validation d'une personne formée en CNV (Tommy). Voir CLAUDE.md §3.5 et §5.",
+    "regle_selection": "Chaque mot d'un triplet appartient RÉELLEMENT à la famille indiquée dans DATA et est géré par disp() (accord F/M/N) — donc réutilisable tel quel, sans reconstruire le moteur d'accord.",
+    "confiance": {
+      "haute": "gradation largement consensuelle — bon candidat pour une première version",
+      "a_discuter": "gradation plausible mais discutable — à trancher par Tommy"
+    }
+  },
+  "familles": [
+    {
+      "id": "colere",
+      "label": "Colère",
+      "valence": "insat",
+      "confiance": "haute",
+      "triplet": { "leger": "agacée", "modere": "fâchée", "intense": "furieuse" },
+      "autres_candidats": {
+        "leger": ["titillée", "contrariée", "irritée"],
+        "modere": ["énervée", "exaspérée", "froissée"],
+        "intense": ["excédée", "outrée", "révoltée", "hors de ses gonds"]
+      }
+    },
+    {
+      "id": "peur",
+      "label": "Peur",
+      "valence": "insat",
+      "confiance": "haute",
+      "triplet": { "leger": "inquiète", "modere": "anxieuse", "intense": "terrifiée" },
+      "autres_candidats": {
+        "leger": ["soucieuse", "préoccupée", "prudente"],
+        "modere": ["nerveuse", "apeurée", "effrayée"],
+        "intense": ["épouvantée", "horrifiée", "paniquée"]
+      }
+    },
+    {
+      "id": "joie",
+      "label": "Joie",
+      "valence": "sat",
+      "confiance": "haute",
+      "triplet": { "leger": "contente", "modere": "joyeuse", "intense": "radieuse" },
+      "autres_candidats": {
+        "leger": ["gaie", "amusée", "charmée"],
+        "modere": ["ravie", "enchantée", "réjouie"],
+        "intense": ["rayonnante", "hilare"]
+      }
+    },
+    {
+      "id": "triste",
+      "label": "Triste",
+      "valence": "insat",
+      "confiance": "haute",
+      "triplet": { "leger": "déçue", "modere": "malheureuse", "intense": "désespérée" },
+      "autres_candidats": {
+        "leger": ["contrariée", "peinée", "désappointée"],
+        "modere": ["attristée", "chagrinée", "découragée"],
+        "intense": ["abattue", "accablée", "en détresse"]
+      }
+    },
+    {
+      "id": "fatiguee",
+      "label": "Fatiguée",
+      "valence": "insat",
+      "confiance": "haute",
+      "triplet": { "leger": "lasse", "modere": "fatiguée", "intense": "épuisée" },
+      "autres_candidats": {
+        "leger": ["ramollie", "endormie"],
+        "modere": ["surmenée", "saturée", "dépassée"],
+        "intense": ["crevée", "vidée", "au bout du rouleau"]
+      }
+    },
+    {
+      "id": "vitalite",
+      "label": "Vitalité",
+      "valence": "sat",
+      "confiance": "haute",
+      "triplet": { "leger": "animée", "modere": "énergique", "intense": "survoltée" },
+      "autres_candidats": {
+        "leger": ["éveillée", "vive"],
+        "modere": ["enthousiaste", "vibrante", "revigorée"],
+        "intense": ["exaltée", "surexcitée", "exubérante"]
+      },
+      "remarque": "« survoltée » appartient aussi à la famille Colère (mot multi-familles) : à surveiller si le mot est tiré hors contexte."
+    },
+    {
+      "id": "emerveillement",
+      "label": "Émerveillement",
+      "valence": "sat",
+      "confiance": "a_discuter",
+      "triplet": { "leger": "impressionnée", "modere": "émerveillée", "intense": "subjuguée" },
+      "autres_candidats": {
+        "leger": ["admirative", "épatée"],
+        "modere": ["fascinée", "éblouie"],
+        "intense": ["ébahie", "transportée"]
+      },
+      "remarque": "« impressionnée » appartient aussi à Surprise. Gradation moins évidente que pour les 6 familles à haute confiance."
+    },
+    {
+      "id": "confuse",
+      "label": "Confuse",
+      "valence": "insat",
+      "confiance": "a_discuter",
+      "triplet": { "leger": "hésitante", "modere": "déroutée", "intense": "désemparée" },
+      "autres_candidats": {
+        "leger": ["incertaine", "indécise", "perplexe"],
+        "modere": ["déconcertée", "désorientée", "déboussolée"],
+        "intense": ["déstabilisée", "hébétée"]
+      },
+      "remarque": "La confusion se gradue-t-elle vraiment en intensité, ou plutôt en « degré de perte de repères » ? À valider."
+    }
+  ]
+}
